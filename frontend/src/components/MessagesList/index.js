@@ -40,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
 
+    ticketNunber: {
+      color: "#808888",
+      padding: 8,
+    },
+
   messageCenter: {
     marginTop: 5,
     alignItems: "center",
@@ -50,14 +55,13 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 100,
     maxWidth: 270,
     color: "#272727",
-    borderRadius: "5px",
     borderTopLeftRadius: 0,
     borderTopRightRadius: 8,
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
     paddingLeft: 5,
     paddingRight: 5,
-    paddingTop: 0,
+    paddingTop: 5,
     paddingBottom: 0,
     boxShadow: "0 1px 1px #b3b3b3",
   },
@@ -523,16 +527,16 @@ const MessagesList = ({ ticketId, isGroup }) => {
   };
 
   const renderMessageAck = (message) => {
-    if (message.ack === 0) {
+    if (message.ack === 1) {
       return <AccessTime fontSize="small" className={classes.ackIcons} />;
     }
-    if (message.ack === 1) {
+    if (message.ack === 2) {
       return <Done fontSize="small" className={classes.ackIcons} />;
     }
-    if (message.ack === 2) {
+    if (message.ack === 3) {
       return <DoneAll fontSize="small" className={classes.ackIcons} />;
     }
-    if (message.ack === 3 || message.ack === 4) {
+    if (message.ack === 4 || message.ack === 5) {
       return <DoneAll fontSize="small" className={classes.ackDoneAllIcon} />;
     }
   };
@@ -575,6 +579,22 @@ const MessagesList = ({ ticketId, isGroup }) => {
           style={{ float: "left", clear: "both" }}
         />
       );
+    }
+  };
+
+    const renderNumberTicket = (message, index) => {
+    if (index < messagesList.length && index > 0) {
+      let messageTicket = message.ticketId;
+      let previousMessageTicket = messagesList[index - 1].ticketId;
+
+      if (messageTicket !== previousMessageTicket) {
+        return (
+          <div key={`ticket-${message.id}`} className={classes.ticketNunber}>
+            #ticket: {messageTicket}
+            <hr />
+          </div>
+        );
+      }
     }
   };
 
@@ -622,6 +642,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
           return (
             <React.Fragment key={message.id}>
               {renderDailyTimestamps(message, index)}
+              {renderNumberTicket(message, index)}
               {renderMessageDivider(message, index)}
               <div className={classes.messageCenter}>
                 <IconButton
@@ -652,6 +673,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
           return (
             <React.Fragment key={message.id}>
               {renderDailyTimestamps(message, index)}
+              {renderNumberTicket(message, index)}
               {renderMessageDivider(message, index)}
               <div className={classes.messageLeft}>
                 <IconButton
@@ -686,6 +708,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
           return (
             <React.Fragment key={message.id}>
               {renderDailyTimestamps(message, index)}
+              {renderNumberTicket(message, index)}
               {renderMessageDivider(message, index)}
               <div className={classes.messageRight}>
                 <IconButton
@@ -727,7 +750,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
       });
       return viewMessagesList;
     } else {
-      return <div>Diga olá ao seu novo contato!</div>;
+      return <div>Say hello to your new contact!</div>;
     }
   };
 

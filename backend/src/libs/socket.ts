@@ -25,12 +25,12 @@ export const initIO = (httpServer: Server): SocketIO => {
     });
 
     socket.on("joinTickets", (status: string) => {
-      logger.info(`Um cliente entrou nas conversas com status ${status}`);
+      logger.info(`A client joined to ${status} tickets channel.`);
       socket.join(status);
     });
 
     socket.on("disconnect", () => {
-      logger.info("Cliente Desconectado");
+      logger.info("Client disconnected");
     });
   });
   return io;

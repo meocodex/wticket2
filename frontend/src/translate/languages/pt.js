@@ -28,6 +28,10 @@ const messages = {
           register: "Não tem um conta? Cadastre-se!",
         },
       },
+      copyright: {
+        title: "Whaticket",
+      },
+
       auth: {
         toasts: {
           success: "Login efetuado com sucesso!",
@@ -36,7 +40,7 @@ const messages = {
       dashboard: {
         charts: {
           perDay: {
-            title: "Conversas hoje: ",
+            title: "Tickets hoje: ",
           },
         },
         messages: {
@@ -96,7 +100,6 @@ const messages = {
           status: "Status",
           lastUpdate: "Última atualização",
           default: "Padrão",
-          battery: "Bateria",
           actions: "Ações",
           session: "Sessão",
         },
@@ -109,7 +112,13 @@ const messages = {
         form: {
           name: "Nome",
           default: "Padrão",
-          farewellMessage: "Mensagem de despedida"
+          farewellMessage: "Mensagem de despedida",
+          isMultidevice: "Multidevice",
+          transferTicketMessage: "Mensagem de Transferência do Ticket",
+          reopenLastTicket: "Reabrir Ultimo Ticket",
+          minutes: "Minutos",
+          newticketafter: "Gerar um Novo Ticket após",
+          titlenewticketafter: "Ao receber uma mensagem",
         },
         buttons: {
           okAdd: "Adicionar",
@@ -131,7 +140,7 @@ const messages = {
           deleteTitle: "Deletar ",
           importTitlte: "Importar contatos",
           deleteMessage:
-            "Tem certeza que deseja deletar este contato? Todos as conversas relacionados serão perdidos.",
+            "Tem certeza que deseja deletar este contato? Todos os tickets relacionados serão perdidos.",
           importMessage: "Deseja importas todos os contatos do telefone?",
         },
         buttons: {
@@ -192,6 +201,20 @@ const messages = {
           name: "Nome",
           color: "Cor",
           greetingMessage: "Mensagem de saudação",
+          transferQueueMessage: "Mensagem de Transferência entre Setor",
+          outOfWorkMessage: "Personalize a mensagem quando estiver fora do horário de expediente",
+          startWorkHour: "Expediente: Abertura",
+          endWorkHour: "Expediente: Fechamento",
+          monday: "Segunda",
+          tuesday: "Terça",
+          wednesday: "Quarta",
+          thursday: "Quinta",
+          friday: "Sexta",
+          saturday: "Sábado",
+          sunday: "Domingo",
+          holiday: "Feriado",
+          token: "Token",
+          checkHourExpedient: "Checar Horário de Expediente"
         },
         buttons: {
           okAdd: "Adicionar",
@@ -218,12 +241,28 @@ const messages = {
         },
         success: "Usuário salvo com sucesso.",
       },
+      tagModal: {
+        title: {
+          add: "Nova Tag",
+          edit: "Editar Tag",
+        },
+        form: {
+          name: "Nome",
+          color: "Cor"
+        },
+        buttons: {
+          okAdd: "Adicionar",
+          okEdit: "Salvar",
+          cancel: "Cancelar",
+        },
+        success: "Tag salvo com sucesso.",
+      },
       chat: {
-        noTicketMessage: "Selecione um contato para começar a conversar.",
+        noTicketMessage: "Selecione um ticket para começar a conversar.",
       },
       ticketsManager: {
         buttons: {
-          newTicket: "Nova Conversa",
+          newTicket: "Novo",
         },
       },
       ticketsQueueSelect: {
@@ -231,31 +270,30 @@ const messages = {
       },
       tickets: {
         toasts: {
-          deleted: "A conversa que você estava foi deletado.",
+          deleted: "O ticket que você estava foi deletado.",
         },
         notification: {
           message: "Mensagem de",
         },
         tabs: {
           open: { title: "Inbox" },
-          closed: { title: "Encerradas" },
-          search: { title: "Buscar" },
+          closed: { title: "Resolvidos" },
+          search: { title: "Busca" },
         },
         search: {
-          placeholder: "Buscar conversas e mensagens",
+          placeholder: "Buscar tickets e mensagens",
         },
         buttons: {
           showAll: "Todos",
         },
       },
       transferTicketModal: {
-        title: "Transferir Conversa",
+        title: "Transferir Ticket",
         fieldLabel: "Digite para buscar usuários",
         fieldQueueLabel: "Transferir para fila",
         fieldConnectionLabel: "Transferir para conexão",
         fieldQueuePlaceholder: "Selecione uma fila",
         fieldConnectionPlaceholder: "Selecione uma conexão",
-        fieldQueuePlaceholder: "Selecione uma fila",
         noOptions: "Nenhum usuário encontrado com esse nome",
         buttons: {
           ok: "Transferir",
@@ -263,21 +301,22 @@ const messages = {
         },
       },
       ticketsList: {
-        pendingHeader: "Aguardando resposta",
-        assignedHeader: "Conversas abertas",
-        noTicketsTitle: "Nenhuma conversa",
+        pendingHeader: "Aguardando",
+        assignedHeader: "Atendendo",
+        noTicketsTitle: "Nada aqui!",
         noTicketsMessage:
-          "Nenhuma conversa encontrada com esse status ou termo pesquisado",
+          "Nenhum ticket encontrado com esse status ou termo pesquisado",
+        connectionTitle: "Conexão que está sendo utilizada atualmente.",
         buttons: {
-          accept: "Responder",
+          accept: "Aceitar",
         },
       },
       newTicketModal: {
-        title: "Nova Conversa",
+        title: "Criar Ticket",
         fieldLabel: "Digite para pesquisar o contato",
         add: "Adicionar",
         buttons: {
-          ok: "Iniciar conversa",
+          ok: "Salvar",
           cancel: "Cancelar",
         },
       },
@@ -288,9 +327,18 @@ const messages = {
           tickets: "Conversas",
           contacts: "Contatos",
           quickAnswers: "Respostas Rápidas",
-          queues: "Filas",
+          queues: "Filas & Chatbot",
+          schedules: "Agendamentos",
+          tags: "Tags",
+          api: "API",
+          gerenciarcampanha: "Campanhas",
+          configcampanha: "Config. Campanhas",
+          relatoriocampanha: "Relatório Envios",
+          enviocampanha: "Envio em Massa",
           administration: "Administração",
           users: "Usuários",
+          docs: "Documentação",
+          tokens: "Tokens",
           settings: "Configurações",
         },
         appBar: {
@@ -302,6 +350,46 @@ const messages = {
       },
       notifications: {
         noTickets: "Nenhuma notificação.",
+      },
+      schedules: {
+        title: "Agendamentos",
+        confirmationModal: {
+          deleteTitle:
+            "Você tem certeza que quer excluir este Agendamento?",
+          deleteMessage: "Esta ação não pode ser revertida.",
+        },
+        table: {
+          contact: "Contato",
+          body: "Mensagem",
+          sendAt: "Data de Agendamento",
+          sentAt: "Data de Envio",
+          status: "Status",
+          actions: "Ações",
+        },
+        buttons: {
+          add: "Novo Agendamento",
+        },
+        toasts: {
+          deleted: "Agendamento excluído com sucesso.",
+        }
+      },
+      scheduleModal: {
+        title: {
+          add: "Novo Agendamento",
+          edit: "Editar Agendamento",
+        },
+        form: {
+          body: "Mensagem",
+          contact: "Contato",
+          sendAt: "Data de Agendamento",
+          sentAt: "Data de Envio"
+        },
+        buttons: {
+          okAdd: "Adicionar",
+          okEdit: "Salvar",
+          cancel: "Cancelar",
+        },
+        success: "Agendamento salvo com sucesso.",
       },
       queues: {
         title: "Filas",
@@ -317,7 +405,7 @@ const messages = {
         confirmationModal: {
           deleteTitle: "Excluir",
           deleteMessage:
-            "Você tem certeza? Essa ação não pode ser revertida! Os conversas dessa fila continuarão existindo, mas não terão mais nenhuma fila atribuída.",
+            "Você tem certeza? Essa ação não pode ser revertida! Os tickets dessa fila continuarão existindo, mas não terão mais nenhuma fila atribuída.",
         },
       },
       queueSelect: {
@@ -361,8 +449,28 @@ const messages = {
         confirmationModal: {
           deleteTitle: "Excluir",
           deleteMessage:
-            "Todos os dados do usuário serão perdidos. As conversas abertas deste usuário serão movidos para a fila.",
+            "Todos os dados do usuário serão perdidos. Os tickets abertos deste usuário serão movidos para a fila.",
         },
+      },
+      tags: {
+        title: "Tags",
+        confirmationModal: {
+          deleteTitle:
+            "Você tem certeza que quer excluir esta Tag?",
+          deleteMessage: "Esta ação não pode ser revertida.",
+        },
+        table: {
+          name: "Nome",
+          color: "Cor",
+          tickets: "Registros Tagdos",
+          actions: "Ações",
+        },
+        buttons: {
+          add: "Nova Tag",
+        },
+        toasts: {
+          deleted: "Tag excluído com sucesso.",
+        }
       },
       settings: {
         success: "Configurações salvas com sucesso.",
@@ -375,15 +483,8 @@ const messages = {
               disabled: "Desativado",
             },
           },
-          CheckMsgIsGroup: {
-            name: "Ignorar Mensagem de Grupos",
-            options: {
-                enabled: "Ativado",
-                disabled: "Desativado",
-            },
-          },
           timeCreateNewTicket: {
-            name: "Cria novo ticket após",
+            name: "Mensagem de boas-vindas após",
             note: "Selecione o tempo que será necessário para abrir um novo ticket, caso o cliente entre em contatos novamente",
             options: {
               "10": "10 Segundos",
@@ -405,24 +506,31 @@ const messages = {
               enabled: "Ativado",
               disabled: "Desativado",
             },
-          },          
+          },
+          CheckMsgIsGroup: {
+            name: "Ignorar Mensagens de Grupos",
+            options: {
+                enabled: "Ativado",
+                disabled: "Desativado",
+            },
+          },
         },
       },
       messagesList: {
         header: {
-          assignedTo: "Pessoa Responsável:",
+          assignedTo: "Atribuído à:",
           buttons: {
-            return: "Retornar Conversa",
-            resolve: "Encerrar Conversa",
-            reopen: "Reabrir Conversa",
-            accept: "Aceitar Conversa",
+            return: "Retornar",
+            resolve: "Resolver",
+            reopen: "Reabrir",
+            accept: "Aceitar",
           },
         },
       },
       messagesInput: {
-        placeholderOpen: "Digite uma mensagem ou tecle ''/'' para respostas rápidas",
+        placeholderOpen: "Digite uma mensagem ou tecle ''/'' para utilizar as respostas rápidas cadastrada",
         placeholderClosed:
-          "Reabra ou aceite essa conversa para enviar uma mensagem.",
+          "Reabra ou aceite esse ticket para enviar uma mensagem.",
         signMessage: "Assinar",
       },
       contactDrawer: {
@@ -436,9 +544,9 @@ const messages = {
         delete: "Deletar",
         transfer: "Transferir",
         confirmationModal: {
-          title: "Deletar a conversa do contato",
+          title: "Deletar o ticket do contato",
           message:
-            "Atenção! Todas as mensagens relacionadas ao contato serão perdidas.",
+            "Atenção! Todas as mensagens relacionadas ao ticket serão perdidas.",
         },
         buttons: {
           delete: "Excluir",
@@ -460,6 +568,7 @@ const messages = {
         },
       },
       backendErrors: {
+        ERR_TAG_NAME_ALREADY_EXISTS: "Já existe uma tag com esse nome.",
         ERR_NO_OTHER_WHATSAPP: "Deve haver pelo menos um WhatsApp padrão.",
         ERR_NO_DEF_WAPP_FOUND:
           "Nenhum WhatsApp padrão encontrado. Verifique a página de conexões.",
@@ -470,14 +579,12 @@ const messages = {
         ERR_WAPP_INVALID_CONTACT: "Este não é um número de Whatsapp válido.",
         ERR_WAPP_DOWNLOAD_MEDIA:
           "Não foi possível baixar mídia do WhatsApp. Verifique a página de conexões.",
-        ERR_WAPP_DOWNLOAD_MEDIA_DENIED:
-          "Não foi possível baixar mídia do WhatsApp. O tipo de arquivo recebido está bloqeuado pelo Adminsitrador.",
         ERR_INVALID_CREDENTIALS:
           "Erro de autenticação. Por favor, tente novamente.",
         ERR_SENDING_WAPP_MSG:
           "Erro ao enviar mensagem do WhatsApp. Verifique a página de conexões.",
         ERR_DELETE_WAPP_MSG: "Não foi possível excluir a mensagem do WhatsApp.",
-        ERR_OTHER_OPEN_TICKET: "Já existe uma conversa em aberto para este contato.",
+        ERR_OTHER_OPEN_TICKET: "Já existe um tíquete aberto para este contato.",
         ERR_SESSION_EXPIRED: "Sessão expirada. Por favor entre.",
         ERR_USER_CREATION_DISABLED:
           "A criação do usuário foi desabilitada pelo administrador.",

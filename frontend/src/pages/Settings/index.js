@@ -96,7 +96,7 @@ const Settings = () => {
 
 	return (
 		<div className={classes.root}>
-			<Container className={classes.container} maxWidth="sm">
+			<Container className={classes.container} >
 				<Typography variant="body2" gutterBottom>
 					{i18n.t("settings.title")}
 				</Typography>
@@ -124,30 +124,7 @@ const Settings = () => {
 						</option>
 					</Select>
 				</Paper>
-				<Paper className={classes.paper}>
-					<Typography variant="body1">
-						{i18n.t("settings.settings.CheckMsgIsGroup.name")}
-					</Typography>
-					<Select
-						margin="dense"
-						variant="outlined"
-						native
-						id="CheckMsgIsGroup-setting"
-						name="CheckMsgIsGroup"
-						value={
-							settings && settings.length > 0 && getSettingValue("CheckMsgIsGroup")
-						}
-						className={classes.settingOption}
-						onChange={handleChangeSetting}
-					>
-						<option value="enabled">
-							{i18n.t("settings.settings.CheckMsgIsGroup.options.enabled")}
-						</option>
-						<option value="disabled">
-							{i18n.t("settings.settings.CheckMsgIsGroup.options.disabled")}
-						</option>
-					</Select>
-				</Paper>
+							
 				<Typography variant="body2" gutterBottom></Typography>
 				<Tooltip title={i18n.t("settings.settings.timeCreateNewTicket.note")}>
 					<Paper className={classes.paper} elevation={3}>
@@ -231,16 +208,58 @@ const Settings = () => {
 				</Paper>
 
 				<Paper className={classes.paper}>
-					<TextField
-						id="api-token-setting"
-						readonly
-						label="Token Api"
+					<Typography variant="body1">
+						{i18n.t("settings.settings.CheckMsgIsGroup.name")}
+					</Typography>
+					<Select
 						margin="dense"
 						variant="outlined"
-						fullWidth
-						value={settings && settings.length > 0 && getSettingValue("userApiToken")}
-					/>
+						native
+						id="CheckMsgIsGroup-setting"
+						name="CheckMsgIsGroup"
+						value={
+							settings && settings.length > 0 && getSettingValue("CheckMsgIsGroup")
+						}
+						className={classes.settingOption}
+						onChange={handleChangeSetting}
+					>
+						<option value="enabled">
+							{i18n.t("settings.settings.CheckMsgIsGroup.options.enabled")}
+						</option>
+						<option value="disabled">
+							{i18n.t("settings.settings.CheckMsgIsGroup.options.disabled")}
+						</option>
+					</Select>
 				</Paper>
+
+        <Paper className={classes.paper}>
+          <Typography variant="body1">
+            Tipo do Chatbot
+          </Typography>
+          <Select
+            margin="dense"
+            variant="outlined"
+            native
+            id="chatBotType-setting"
+            name="chatBotType"
+            value={settings && settings.length > 0 && getSettingValue("chatBotType")}
+            className={classes.settingOption}
+            onChange={handleChangeSetting}
+          >
+            <option value="text">
+              Texto
+            </option>
+
+            <option value="button">
+              Botão
+            </option>
+
+						<option value="list">
+              Lista
+            </option>
+
+          </Select>
+        </Paper>
 
 			</Container>
 		</div>

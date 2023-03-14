@@ -23,6 +23,7 @@ import {
 	SignalCellularConnectedNoInternet2Bar,
 	SignalCellularConnectedNoInternet0Bar,
 	SignalCellular4Bar,
+	BatteryChargingFull,
 	CropFree,
 	DeleteOutline,
 } from "@material-ui/icons";
@@ -230,17 +231,17 @@ const Connections = () => {
 				{(whatsApp.status === "CONNECTED" ||
 					whatsApp.status === "PAIRING" ||
 					whatsApp.status === "TIMEOUT") && (
-					<Button
-						size="small"
-						variant="outlined"
-						color="secondary"
-						onClick={() => {
-							handleOpenConfirmationModal("disconnect", whatsApp.id);
-						}}
-					>
-						{i18n.t("connections.buttons.disconnect")}
-					</Button>
-				)}
+						<Button
+							size="small"
+							variant="outlined"
+							color="secondary"
+							onClick={() => {
+								handleOpenConfirmationModal("disconnect", whatsApp.id);
+							}}
+						>
+							{i18n.t("connections.buttons.disconnect")}
+						</Button>
+					)}
 				{whatsApp.status === "OPENING" && (
 					<Button size="small" variant="outlined" disabled color="default">
 						{i18n.t("connections.buttons.connecting")}
@@ -289,6 +290,23 @@ const Connections = () => {
 		);
 	};
 
+	const renderStatusBattery = whatsApp => {
+		return (
+			<div className={classes.customTableCell}>
+				{whatsApp.battery < 20 && (
+					<CustomToolTip title={whatsApp.battery}>
+						<BatteryChargingFull color="secondary" />
+					</CustomToolTip>
+				)}
+				{whatsApp.battery > 20 && (
+					<CustomToolTip title={whatsApp.battery}>
+						<BatteryChargingFull style={{ color: green[500] }} />
+					</CustomToolTip>
+				)}
+			</div>
+		);
+	};
+
 	return (
 		<MainContainer>
 			<ConfirmationModal
@@ -326,7 +344,13 @@ const Connections = () => {
 					<TableHead>
 						<TableRow>
 							<TableCell align="center">
+								{i18n.t("connections.table.id")}
+							</TableCell>
+							<TableCell align="center">
 								{i18n.t("connections.table.name")}
+							</TableCell>
+							<TableCell align="center">
+								{i18n.t("connections.table.battery")}
 							</TableCell>
 							<TableCell align="center">
 								{i18n.t("connections.table.status")}
@@ -353,7 +377,15 @@ const Connections = () => {
 								{whatsApps?.length > 0 &&
 									whatsApps.map(whatsApp => (
 										<TableRow key={whatsApp.id}>
-											<TableCell align="center">{whatsApp.name}</TableCell>
+											<TableCell align="center">
+												{whatsApp.id}
+												</TableCell>
+											<TableCell align="center">
+												{whatsApp.name}
+												</TableCell>
+											<TableCell align="center">
+												{renderStatusBattery(whatsApp)}
+											</TableCell>
 											<TableCell align="center">
 												{renderStatusToolTips(whatsApp)}
 											</TableCell>

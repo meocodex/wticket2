@@ -66,8 +66,10 @@ const useStyles = makeStyles(theme => ({
 
 	closedBadge: {
 		alignSelf: "center",
-		justifySelf: "flex-end",
-		marginRight: 32,
+		justifySelf: "center",
+		marginRight: 42,
+		top: "-2px",
+		paddingRight: 20,
 		marginLeft: "auto",
 	},
 
@@ -98,21 +100,6 @@ const useStyles = makeStyles(theme => ({
 		position: "absolute",
 		top: "0%",
 		left: "0%",
-	},
-
-	userTag: {
-		position: "absolute",
-		marginRight: 35,
-		right: 10,
-		bottom: 9,
-		background:"#2576D2",
-		color: "#ffffff",
-		border:"1px solid #CCC",
-		padding: 1,
-		paddingLeft: 5,
-		paddingRight: 5,
-		borderRadius: 10,
-		fontSize: "0.9em"
 	},
 }));
 
@@ -193,7 +180,7 @@ const TicketListItem = ({ ticket }) => {
 							{ticket.status === "closed" && (
 								<Badge
 									className={classes.closedBadge}
-									badgeContent={"closed"}
+									badgeContent={"Encerrada"}
 									color="primary"
 								/>
 							)}
@@ -210,9 +197,6 @@ const TicketListItem = ({ ticket }) => {
 										<>{format(parseISO(ticket.updatedAt), "dd/MM/yyyy")}</>
 									)}
 								</Typography>
-							)}
-							{ticket?.whatsappId && (
-								<div className={classes.userTag} title={i18n.t("ticketsList.connectionTitle")}>{ticket.whatsapp.name}</div>
 							)}
 						</span>
 					}

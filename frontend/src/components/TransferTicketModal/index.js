@@ -104,7 +104,6 @@ const TransferTicketModal = ({ modalOpen, onClose, ticketid }) => {
 				if (!selectedUser) {
 					data.status = 'pending';
 					data.userId = null;
-					data.transf = true;
 				}
 			}
 
@@ -125,7 +124,7 @@ const TransferTicketModal = ({ modalOpen, onClose, ticketid }) => {
 					{i18n.t("transferTicketModal.title")}
 				</DialogTitle>
 				<DialogContent dividers>
-					{/* <Autocomplete
+					<Autocomplete
 						style={{ width: 300, marginBottom: 20 }}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(e, newValue) => {
@@ -164,7 +163,7 @@ const TransferTicketModal = ({ modalOpen, onClose, ticketid }) => {
 								}}
 							/>
 						)}
-					/> */}
+					/>
 					<FormControl variant="outlined" className={classes.maxWidth}>
 						<InputLabel>{i18n.t("transferTicketModal.fieldQueueLabel")}</InputLabel>
 						<Select

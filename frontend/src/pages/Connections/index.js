@@ -231,17 +231,17 @@ const Connections = () => {
 				{(whatsApp.status === "CONNECTED" ||
 					whatsApp.status === "PAIRING" ||
 					whatsApp.status === "TIMEOUT") && (
-						<Button
-							size="small"
-							variant="outlined"
-							color="secondary"
-							onClick={() => {
-								handleOpenConfirmationModal("disconnect", whatsApp.id);
-							}}
-						>
-							{i18n.t("connections.buttons.disconnect")}
-						</Button>
-					)}
+					<Button
+						size="small"
+						variant="outlined"
+						color="secondary"
+						onClick={() => {
+							handleOpenConfirmationModal("disconnect", whatsApp.id);
+						}}
+					>
+						{i18n.t("connections.buttons.disconnect")}
+					</Button>
+				)}
 				{whatsApp.status === "OPENING" && (
 					<Button size="small" variant="outlined" disabled color="default">
 						{i18n.t("connections.buttons.connecting")}
@@ -344,25 +344,22 @@ const Connections = () => {
 					<TableHead>
 						<TableRow>
 							<TableCell align="center">
-								{i18n.t("connections.table.id")}
+								{i18n.t("connections.table.name")}
 							</TableCell>
 							<TableCell align="center">
-								{i18n.t("connections.table.name")}
+								{i18n.t("connections.table.default")}
 							</TableCell>
 							<TableCell align="center">
 								{i18n.t("connections.table.battery")}
 							</TableCell>
 							<TableCell align="center">
-								{i18n.t("connections.table.status")}
-							</TableCell>
-							<TableCell align="center">
 								{i18n.t("connections.table.session")}
 							</TableCell>
 							<TableCell align="center">
-								{i18n.t("connections.table.lastUpdate")}
+								{i18n.t("connections.table.status")}
 							</TableCell>
 							<TableCell align="center">
-								{i18n.t("connections.table.default")}
+								{i18n.t("connections.table.lastUpdate")}
 							</TableCell>
 							<TableCell align="center">
 								{i18n.t("connections.table.actions")}
@@ -377,12 +374,14 @@ const Connections = () => {
 								{whatsApps?.length > 0 &&
 									whatsApps.map(whatsApp => (
 										<TableRow key={whatsApp.id}>
+											<TableCell align="center">{whatsApp.name}</TableCell>
 											<TableCell align="center">
-												{whatsApp.id}
-												</TableCell>
-											<TableCell align="center">
-												{whatsApp.name}
-												</TableCell>
+												{whatsApp.isDefault && (
+													<div className={classes.customTableCell}>
+														<CheckCircle style={{ color: green[500] }} />
+													</div>
+												)}
+											</TableCell>
 											<TableCell align="center">
 												{renderStatusBattery(whatsApp)}
 											</TableCell>
@@ -394,13 +393,6 @@ const Connections = () => {
 											</TableCell>
 											<TableCell align="center">
 												{format(parseISO(whatsApp.updatedAt), "dd/MM/yy HH:mm")}
-											</TableCell>
-											<TableCell align="center">
-												{whatsApp.isDefault && (
-													<div className={classes.customTableCell}>
-														<CheckCircle style={{ color: green[500] }} />
-													</div>
-												)}
 											</TableCell>
 											<TableCell align="center">
 												<IconButton

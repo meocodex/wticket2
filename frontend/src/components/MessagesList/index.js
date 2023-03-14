@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, useRef } from "react";
 
 import { isSameDay, parseISO, format } from "date-fns";
-import openSocket from "../../services/socket-io";
+import openSocket from "socket.io-client";
 import clsx from "clsx";
 
 import { green } from "@material-ui/core/colors";
@@ -38,6 +38,28 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
+  },
+
+  messageCenter: {
+    marginTop: 5,
+    alignItems: "center",
+    verticalAlign: "center",
+    alignContent: "center",
+    backgroundColor: "#E1F5FEEB",
+    fontSize: "12px",
+    minWidth: 100,
+    maxWidth: 270,
+    color: "#272727",
+    borderRadius: "5px",
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 0,
+    paddingBottom: 0,
+    boxShadow: "0 1px 1px #b3b3b3",
   },
 
   messagesList: {
@@ -258,27 +280,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "inherit",
     padding: 10,
   },
-
-  messageCenter: {
-    marginTop: 5,
-    alignItems: "center",
-    verticalAlign: "center",
-    alignContent: "center",
-    backgroundColor: "#E1F5FEEB",
-    fontSize: "12px",
-    minWidth: 100,
-    maxWidth: 270,
-    color: "#272727",
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 8,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingTop: 5,
-    paddingBottom: 0,
-    boxShadow: "0 1px 1px #b3b3b3",
-  },
 }));
 
 const reducer = (state, action) => {
@@ -379,7 +380,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
   }, [pageNumber, ticketId]);
 
   useEffect(() => {
-    const socket = openSocket();
+    const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
 
     socket.on("connect", () => socket.emit("joinChatBox", ticketId));
 
@@ -436,56 +437,56 @@ const MessagesList = ({ ticketId, isGroup }) => {
   };
 
   const checkMessageMedia = (message) => {
-    if (message.mediaType === "location" && message.body.split('|').length >= 2) {
-      let locationParts = message.body.split('|')
-      let imageLocation = locationParts[0]
-      let linkLocation = locationParts[1]
-
-      let descriptionLocation = null
-
-      if (locationParts.length > 2)
-        descriptionLocation = message.body.split('|')[2]
-
-      return <LocationPreview image={imageLocation} link={linkLocation} description={descriptionLocation} />
-    }
-    else if (message.mediaType === "vcard") {
-      //console.log("vcard")
-      //console.log(message)
-      let array = message.body.split("\n");
-      let obj = [];
-      let contact = "";
-      for (let index = 0; index < array.length; index++) {
-        const v = array[index];
-        let values = v.split(":");
-        for (let ind = 0; ind < values.length; ind++) {
-          if (values[ind].indexOf("+") !== -1) {
-            obj.push({ number: values[ind] });
-          }
-          if (values[ind].indexOf("FN") !== -1) {
-            contact = values[ind + 1];
-          }
-        }
-      }
-      return <VcardPreview contact={contact} numbers={obj[0].number} />
-    }
-    /*else if (message.mediaType === "multi_vcard") {
-      console.log("multi_vcard")
-      console.log(message)
-    	
-      if(message.body !== null && message.body !== "") {
-        let newBody = JSON.parse(message.body)
-        return (
-          <>
-            {
-            newBody.map(v => (
-              <VcardPreview contact={v.name} numbers={v.number} />
-            ))
-            }
-          </>
-        )
-      } else return (<></>)
-    }*/
-    else if (message.mediaType === "image") {
+	if(message.mediaType === "location" && message.body.split('|').length >= 2) {
+		let locationParts = message.body.split('|')
+		let imageLocation = locationParts[0]		
+		let linkLocation = locationParts[1]
+		
+		let descriptionLocation = null
+		
+		if(locationParts.length > 2)
+			descriptionLocation = message.body.split('|')[2]
+		
+		return <LocationPreview image={imageLocation} link={linkLocation} description={descriptionLocation} />
+	}
+	else if (message.mediaType === "vcard") {
+		//console.log("vcard")
+		//console.log(message)
+		let array = message.body.split("\n");
+		let obj = [];
+		let contact = "";
+		for (let index = 0; index < array.length; index++) {
+			const v = array[index];
+			let values = v.split(":");
+			for (let ind = 0; ind < values.length; ind++) {
+				if (values[ind].indexOf("+") !== -1) {
+					obj.push({ number: values[ind] });
+				}
+				if (values[ind].indexOf("FN") !== -1) {
+					contact = values[ind + 1];
+				}
+			}
+		}
+		return <VcardPreview contact={contact} numbers={obj[0].number} />
+	} 
+  /*else if (message.mediaType === "multi_vcard") {
+		console.log("multi_vcard")
+		console.log(message)
+		
+		if(message.body !== null && message.body !== "") {
+			let newBody = JSON.parse(message.body)
+			return (
+				<>
+				  {
+					newBody.map(v => (
+					  <VcardPreview contact={v.name} numbers={v.number} />
+					))
+				  }
+				</>
+			)
+		} else return (<></>)
+	}*/
+  else if (message.mediaType === "image") {
       return <ModalImageCors imageUrl={message.mediaUrl} />;
     } else if (message.mediaType === "audio") {
       return (
@@ -668,8 +669,8 @@ const MessagesList = ({ ticketId, isGroup }) => {
                     {message.contact?.name}
                   </span>
                 )}
-                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard"
-                  //|| message.mediaType === "multi_vcard" 
+                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard" 
+                //|| message.mediaType === "multi_vcard" 
                 ) && checkMessageMedia(message)}
                 <div className={classes.textContentItem}>
                   {message.quotedMsg && renderQuotedMessage(message)}
@@ -697,8 +698,8 @@ const MessagesList = ({ ticketId, isGroup }) => {
                 >
                   <ExpandMore />
                 </IconButton>
-                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard"
-                  //|| message.mediaType === "multi_vcard" 
+                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard" 
+                //|| message.mediaType === "multi_vcard" 
                 ) && checkMessageMedia(message)}
                 <div
                   className={clsx(classes.textContentItem, {
@@ -713,10 +714,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
                     />
                   )}
                   {message.quotedMsg && renderQuotedMessage(message)}
-                  {(message.mediaType === "image"
-                    ? ''
-                    : <MarkdownWrapper>{message.body}</MarkdownWrapper>
-                  )}
+                  <MarkdownWrapper>{message.body}</MarkdownWrapper>
                   <span className={classes.timestamp}>
                     {format(parseISO(message.createdAt), "HH:mm")}
                     {renderMessageAck(message)}
@@ -729,7 +727,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
       });
       return viewMessagesList;
     } else {
-      return <div>Say hello to your new contact!</div>;
+      return <div>Diga olá ao seu novo contato!</div>;
     }
   };
 

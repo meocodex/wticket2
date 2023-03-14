@@ -12,6 +12,12 @@ module.exports = {
           updatedAt: new Date()
         },
         {
+          key: "timeCreateNewTicket",
+          value: "10",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
           key: "CheckMsgIsGroup",
           value: "enabled",
           createdAt: new Date(),
@@ -23,18 +29,6 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date()
         },
-        {
-          key: "sideMenu",
-          value: "disabled",
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          key: "timeCreateNewTicket",
-          value: "10",
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
       ],
       {}
     );

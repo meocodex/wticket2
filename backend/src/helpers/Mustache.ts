@@ -9,13 +9,7 @@ export const greeting = (): string => {
   return greetings[(h / 6) >> 0];
 };
 
-export default (body: string, user: User): string => {
- const username = { 
-  nameuser:  user ? user.name : "", 
-  }
-}
-
-export default (body: string, contact: Contact): string => {
+export default (body: string, contact: Contact, user: User): string => {
   let ms = "";
 
   const Hr = new Date();
@@ -46,6 +40,7 @@ export default (body: string, contact: Contact): string => {
 
   const view = {
     name: contact ? contact.name : "",
+	nameuser:  user ? user.name : "", 
     gretting: greeting(),
     ms,
     protocol,

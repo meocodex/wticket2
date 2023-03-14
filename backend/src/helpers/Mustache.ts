@@ -1,5 +1,6 @@
 import Mustache from "mustache";
 import Contact from "../models/Contact";
+import User from "./User";
 import Ticket from "../models/Ticket";
 
 export const greeting = (): string => {

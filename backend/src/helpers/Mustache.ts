@@ -1,10 +1,5 @@
 import Mustache from "mustache";
 import Contact from "../models/Contact";
-import User from "../models/User";
-import Message from "../models/Message";
-import Queue from "../models/Queue";
-import Whatsapp from "../models/Whatsapp";
-import Ticket from "../models/Ticket";
 
 export const greeting = (): string => {
   const greetings = ["Boa madrugada", "Bom dia", "Boa tarde", "Boa noite"];
@@ -13,7 +8,7 @@ export const greeting = (): string => {
   return greetings[(h / 6) >> 0];
 };
 
-export default (body: string, contact: Contact, ticket: Ticket): string => {
+export default (body: string, contact: Contact): string => {
   let ms = "";
 
   const Hr = new Date();

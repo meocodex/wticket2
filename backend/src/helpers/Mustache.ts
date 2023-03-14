@@ -49,8 +49,8 @@ export default (body: string, contact: Contact): string => {
 };
 
 export default (body: string, user: User): string => {
-  const view = {
+  const viewuser = {
     nameuser: user ? user.name : ""
   };
-  return Mustache.render(body, view);
+  return Mustache.render(body, viewuser);
 };

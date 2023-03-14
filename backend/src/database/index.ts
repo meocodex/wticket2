@@ -1,26 +1,19 @@
 import { Sequelize } from "sequelize-typescript";
-import Baileys from "../models/Baileys";
-import Chatbot from "../models/Chatbot";
+import User from "../models/User";
+import Setting from "../models/Setting";
 import Contact from "../models/Contact";
+import Ticket from "../models/Ticket";
+import Whatsapp from "../models/Whatsapp";
 import ContactCustomField from "../models/ContactCustomField";
-import DialogChatBots from "../models/DialogChatBots";
-// import dbConfig from "../config/database";
-import MassMessages from "../models/MassMessages";
 import Message from "../models/Message";
 import Queue from "../models/Queue";
-import QuickAnswer from "../models/QuickAnswer";
-import Schedule from "../models/Schedule";
-import Setting from "../models/Setting";
-import SettingMessage from "../models/SettingMessage";
-import Tag from "../models/Tag";
-import Ticket from "../models/Ticket";
-import TicketTag from "../models/TicketTag";
-import User from "../models/User";
-import UserQueue from "../models/UserQueue";
-import Whatsapp from "../models/Whatsapp";
 import WhatsappQueue from "../models/WhatsappQueue";
+import UserQueue from "../models/UserQueue";
+import QuickAnswer from "../models/QuickAnswer";
+
 // eslint-disable-next-line
 const dbConfig = require("../config/database");
+// import dbConfig from "../config/database";
 
 const sequelize = new Sequelize(dbConfig);
 
@@ -35,15 +28,7 @@ const models = [
   Queue,
   WhatsappQueue,
   UserQueue,
-  QuickAnswer,
-  Baileys,
-  Chatbot,
-  DialogChatBots,
-  Schedule,
-  Tag,
-  TicketTag,
-  SettingMessage,
-  MassMessages,
+  QuickAnswer
 ];
 
 sequelize.addModels(models);

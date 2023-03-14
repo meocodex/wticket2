@@ -1,7 +1,6 @@
 import * as Yup from "yup";
 
 import AppError from "../../errors/AppError";
-import { SerializeUser } from "../../helpers/SerializeUser";
 import ShowUserService from "./ShowUserService";
 
 interface UserData {
@@ -10,7 +9,6 @@ interface UserData {
   name?: string;
   profile?: string;
   queueIds?: number[];
-  whatsappId?: number;
 }
 
 interface Request {
@@ -38,7 +36,7 @@ const UpdateUserService = async ({
     password: Yup.string()
   });
 
-  const { email, password, profile, name, queueIds = [], whatsappId } = userData;
+  const { email, password, profile, name, queueIds = [] } = userData;
 
   try {
     await schema.validate({ email, password, profile, name });
@@ -50,15 +48,22 @@ const UpdateUserService = async ({
     email,
     password,
     profile,
-    name,
-    whatsappId: whatsappId ? whatsappId : null
+    name
   });
 
   await user.$set("queues", queueIds);
 
   await user.reload();
 
-  return SerializeUser(user);
+  const serializedUser = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    profile: user.profile,
+    queues: user.queues
+  };
+
+  return serializedUser;
 };
 
 export default UpdateUserService;

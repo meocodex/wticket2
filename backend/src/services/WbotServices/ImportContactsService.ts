@@ -2,72 +2,39 @@ import GetDefaultWhatsApp from "../../helpers/GetDefaultWhatsApp";
 import { getWbot } from "../../libs/wbot";
 import Contact from "../../models/Contact";
 import { logger } from "../../utils/logger";
-import ShowBaileysService from "../BaileysServices/ShowBaileysService";
-import CreateContactService from "../ContactServices/CreateContactService";
 
-const ImportContactsService = async (userId: number): Promise<void> => {
-  const defaultWhatsapp = await GetDefaultWhatsApp(userId);
+const ImportContactsService = async (): Promise<void> => {
+  const defaultWhatsapp = await GetDefaultWhatsApp();
 
   const wbot = getWbot(defaultWhatsapp.id);
 
   let phoneContacts;
 
   try {
-    if (wbot.type === "legacy") {
-      phoneContacts = wbot.store.contacts;
-    }
-    if (wbot.type === "md") {
-      const contactsString = await ShowBaileysService(wbot.id);
-      phoneContacts = JSON.parse(JSON.stringify(contactsString.contacts));
-    }
+    phoneContacts = await wbot.getContacts();
   } catch (err) {
     logger.error(`Could not get whatsapp contacts from phone. Err: ${err}`);
   }
 
-  if (phoneContacts && wbot.type === "legacy") {
+  if (phoneContacts) {
     await Promise.all(
-      Object.values(phoneContacts).map(async ({ id, name }) => {
-        if (id === "status@broadcast" || id.split("@")[1] === "g.us") return;
-        const number = id.replace(/\D/g, "");
+      phoneContacts.map(async ({ number, name }) => {
+        if (!number) {
+          return null;
+        }
+        if (!name) {
+          name = number;
+        }
 
         const numberExists = await Contact.findOne({
           where: { number }
         });
 
-        if (numberExists) return;
+        if (numberExists) return null;
 
-        try {
-          await CreateContactService({ number, name });
-        } catch (error) {
-          console.log(error);
-          logger.warn(
-            `Could not get whatsapp contacts from phone. Err: ${error}`
-          );
-        }
+        return Contact.create({ number, name });
       })
     );
-  }
-
-  if (phoneContacts && wbot.type === "md") {
-    phoneContacts.forEach(async ({ id, name }) => {
-      if (id === "status@broadcast" || id.includes("g.us") === "g.us") return;
-      const number = id.replace(/\D/g, "");
-
-      const numberExists = await Contact.findOne({
-        where: { number }
-      });
-
-      if (!numberExists) {
-        try {
-          await CreateContactService({ number, name });
-        } catch (error) {
-          console.log(error);
-          logger.warn(
-            `Could not get whatsapp contacts from phone. Err: ${error}`
-          );
-        }
-      }
-    });
   }
 };
 

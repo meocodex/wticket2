@@ -13,7 +13,7 @@ const ListSettingByKeyService = async (
   });
 
   if (!settings) {
-    throw new AppError("ERR_NO_KEY_FOUND", 404);
+    throw new AppError("ERR_NO_API_TOKEN_FOUND", 404);
   }
 
   return { key: settings.key, value: settings.value };

@@ -1,7 +1,6 @@
 import { Sequelize, Op } from "sequelize";
 import Queue from "../../models/Queue";
 import User from "../../models/User";
-import Whatsapp from "../../models/Whatsapp";
 
 interface Request {
   searchParam?: string;
@@ -40,8 +39,7 @@ const ListUsersService = async ({
     offset,
     order: [["createdAt", "DESC"]],
     include: [
-      { model: Queue, as: "queues", attributes: ["id", "name", "color"] },
-      { model: Whatsapp, as: "whatsapp", attributes: ["id", "name"] },
+      { model: Queue, as: "queues", attributes: ["id", "name", "color"] }
     ]
   });
 

@@ -20,7 +20,6 @@ import { i18n } from "../../translate/i18n";
 
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { versionSystem } from "../../../package.json";
-import { nomeEmpresa } from "../../../package.json";
 import logo from '../../assets/logo.png';
 
 const Copyright = () => {
@@ -28,8 +27,8 @@ const Copyright = () => {
     <Typography variant="body2" color="textSecondary" align="center">
       © {new Date().getFullYear()}
       {" - "}
-      <Link color="inherit" href="#">
-        { nomeEmpresa } - v { versionSystem }
+      <Link color="inherit" href="https://github.com/rtenorioh/Press-Ticket">
+        Press Ticket - v {versionSystem}
       </Link>
       {"."}
     </Typography>
@@ -74,6 +73,9 @@ const Login = () => {
       <CssBaseline />
       <div className={classes.paper}>
         <img alt="logo" src={logo}></img>
+        <Typography component="h1" variant="h5">
+          {i18n.t("login.title")}
+        </Typography>
         <form className={classes.form} noValidate onSubmit={handlSubmit}>
           <TextField
             variant="outlined"
@@ -122,7 +124,18 @@ const Login = () => {
           >
             {i18n.t("login.buttons.submit")}
           </Button>
-          
+          <Grid container>
+            <Grid item>
+              <Link
+                href="#"
+                variant="body2"
+                component={RouterLink}
+                to="/signup"
+              >
+                {i18n.t("login.buttons.register")}
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </div>
       <Box mt={8}><Copyright /></Box>

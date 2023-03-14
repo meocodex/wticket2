@@ -1,6 +1,14 @@
 import {
-  BelongsTo, Column,
-  CreatedAt, DataType, Default, ForeignKey, Model, PrimaryKey, Table, UpdatedAt
+  Table,
+  Column,
+  CreatedAt,
+  UpdatedAt,
+  Model,
+  DataType,
+  PrimaryKey,
+  Default,
+  BelongsTo,
+  ForeignKey
 } from "sequelize-typescript";
 import Contact from "./Contact";
 import Ticket from "./Ticket";
@@ -23,20 +31,8 @@ class Message extends Model<Message> {
   @Column
   fromMe: boolean;
 
-  @Column(DataType.STRING("long"))
+  @Column(DataType.TEXT)
   body: string;
-
-  @Column(DataType.STRING)
-  textMassMessage: string;
-
-  @Column(DataType.STRING("long"))
-  dataJson: string;
-
-  @Column(DataType.STRING)
-  remoteJid: string;
-
-  @Column(DataType.STRING)
-  participant: string;
 
   @Column(DataType.STRING)
   get mediaUrl(): string | null {

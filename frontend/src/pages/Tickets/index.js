@@ -13,7 +13,8 @@ import Hidden from "@material-ui/core/Hidden";
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
     flex: 1,
-    padding: 16,
+    // // backgroundColor: "#eee",
+    // padding: theme.spacing(4),
     height: `calc(100% - 48px)`,
     overflowY: "hidden",
   },

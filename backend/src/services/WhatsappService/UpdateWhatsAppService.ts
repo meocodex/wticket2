@@ -14,21 +14,6 @@ interface WhatsappData {
   greetingMessage?: string;
   farewellMessage?: string;
   queueIds?: number[];
-  transferTicketMessage?: string;
-
-  startWorkHour?: string;
-  endWorkHour?: string;
-  startWorkHourWeekend?: string;
-  endWorkHourWeekend?: string;
-  outOfWorkMessage?: string;
-  monday?: string;
-  tuesday?: string;
-  wednesday?: string;
-  thursday?: string;
-  friday?: string;
-  saturday?: string;
-  sunday?: string;
-  defineWorkHours?: string;
 }
 
 interface Request {
@@ -58,21 +43,7 @@ const UpdateWhatsAppService = async ({
     session,
     greetingMessage,
     farewellMessage,
-    queueIds = [],
-    transferTicketMessage,
-    startWorkHour,
-    endWorkHour,
-    startWorkHourWeekend,
-    endWorkHourWeekend,
-    outOfWorkMessage,
-    monday,
-    tuesday,
-    wednesday,
-    thursday,
-    friday,
-    saturday,
-    sunday,
-    defineWorkHours
+    queueIds = []
   } = whatsappData;
 
   try {
@@ -104,21 +75,7 @@ const UpdateWhatsAppService = async ({
     session,
     greetingMessage,
     farewellMessage,
-    isDefault,
-    transferTicketMessage,
-    startWorkHour,
-    endWorkHour,
-    startWorkHourWeekend,
-    endWorkHourWeekend,
-    outOfWorkMessage,
-    monday,
-    tuesday,
-    wednesday,
-    thursday,
-    friday,
-    saturday,
-    sunday,
-    defineWorkHours
+    isDefault
   });
 
   await AssociateWhatsappQueue(whatsapp, queueIds);

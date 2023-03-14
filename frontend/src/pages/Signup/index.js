@@ -28,7 +28,6 @@ import { i18n } from "../../translate/i18n";
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
 
-import { nomeEmpresa } from "../../../package.json";
 import { versionSystem } from "../../../package.json";
 import logo from '../../assets/logo.png';
 
@@ -37,8 +36,8 @@ const Copyright = () => {
 		<Typography variant="body2" color="textSecondary" align="center">
 			© {new Date().getFullYear()}
 			{" - "}
-			<Link color="inherit" href="#">
-                             {nomeEmpresa} - v {versionSystem}
+			<Link color="inherit" href="https://github.com/rtenorioh/Press-Ticket">
+				Press Ticket - v {versionSystem}
 			</Link>
 			{"."}
 		</Typography>
@@ -93,6 +92,9 @@ const SignUp = () => {
 			<CssBaseline />
 			<div className={classes.paper}>
 				<img alt="logo" src={logo}></img>
+				<Typography component="h1" variant="h5">
+					{i18n.t("signup.title")}
+				</Typography>
 				{/* <form className={classes.form} noValidate onSubmit={handleSignUp}> */}
 				<Formik
 					initialValues={user}
@@ -172,7 +174,18 @@ const SignUp = () => {
 							>
 								{i18n.t("signup.buttons.submit")}
 							</Button>
-							
+							<Grid container justify="flex-end">
+								<Grid item>
+									<Link
+										href="#"
+										variant="body2"
+										component={RouterLink}
+										to="/login"
+									>
+										{i18n.t("signup.buttons.login")}
+									</Link>
+								</Grid>
+							</Grid>
 						</Form>
 					)}
 				</Formik>

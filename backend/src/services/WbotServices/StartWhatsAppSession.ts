@@ -1,9 +1,9 @@
-import { getIO } from "../../libs/socket";
 import { initWbot } from "../../libs/wbot";
 import Whatsapp from "../../models/Whatsapp";
-import { logger } from "../../utils/logger";
 import { wbotMessageListener } from "./wbotMessageListener";
+import { getIO } from "../../libs/socket";
 import wbotMonitor from "./wbotMonitor";
+import { logger } from "../../utils/logger";
 
 export const StartWhatsAppSession = async (
   whatsapp: Whatsapp

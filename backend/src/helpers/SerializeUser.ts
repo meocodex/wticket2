@@ -1,6 +1,5 @@
 import Queue from "../models/Queue";
 import User from "../models/User";
-import Whatsapp from "../models/Whatsapp";
 
 interface SerializedUser {
   id: number;
@@ -8,7 +7,6 @@ interface SerializedUser {
   email: string;
   profile: string;
   queues: Queue[];
-  whatsapp: Whatsapp;
 }
 
 export const SerializeUser = (user: User): SerializedUser => {
@@ -17,7 +15,6 @@ export const SerializeUser = (user: User): SerializedUser => {
     name: user.name,
     email: user.email,
     profile: user.profile,
-    queues: user.queues,
-    whatsapp: user.whatsapp
+    queues: user.queues
   };
 };

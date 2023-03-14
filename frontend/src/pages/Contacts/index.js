@@ -226,9 +226,8 @@ const Contacts = () => {
       <ConfirmationModal
         title={
           deletingContact
-            ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${
-                deletingContact.name
-              }?`
+            ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${deletingContact.name
+            }?`
             : `${i18n.t("contacts.confirmationModal.importTitlte")}`
         }
         open={confirmOpen}
@@ -259,13 +258,21 @@ const Contacts = () => {
               ),
             }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={(e) => setConfirmOpen(true)}
-          >
-            {i18n.t("contacts.buttons.import")}
-          </Button>
+          <Can
+            role={user.profile}
+            perform="drawer-admin-items:view"
+            yes={() => (
+              <>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={(e) => setConfirmOpen(true)}
+                >
+                  {i18n.t("contacts.buttons.import")}
+                </Button>
+              </>
+            )}
+          />
           <Button
             variant="contained"
             color="primary"

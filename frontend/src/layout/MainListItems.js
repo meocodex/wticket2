@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+import { AddCircleOutline, ChatBubbleOutlineOutlined, LibraryBooks } from "@material-ui/icons";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -15,10 +17,8 @@ import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import ContactPhoneOutlinedIcon from "@material-ui/icons/ContactPhoneOutlined";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
 import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutlined";
-import CodeIcon from '@material-ui/icons/Code';
-import MenuBookIcon from '@material-ui/icons/MenuBook';
-import VpnKeyRoundedIcon from '@material-ui/icons/VpnKeyRounded';
-
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import EventIcon from '@material-ui/icons/Event';
 import { i18n } from "../translate/i18n";
 import { WhatsAppsContext } from "../context/WhatsApp/WhatsAppsContext";
 import { AuthContext } from "../context/Auth/AuthContext";
@@ -37,7 +37,7 @@ function ListItemLink(props) {
 
   return (
     <li>
-      <ListItem button component={renderLink} className={className}>
+      <ListItem button component={renderLink} className={className} style={{ marginTop: -12 }}>
         {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
         <ListItemText primary={primary} />
       </ListItem>
@@ -81,15 +81,24 @@ const MainListItems = (props) => {
         icon={<DashboardOutlinedIcon />}
       />
       <ListItemLink
-          to="/KBODashboard"
-          primary="Dashboard Tickets"
-          icon={<DashboardOutlinedIcon />}
+        to="/connections"
+        primary={i18n.t("mainDrawer.listItems.connections")}
+        icon={
+          <Badge
+            overlap="rectangular"
+            badgeContent={connectionWarning ? "!" : 0}
+            color="error"
+          >
+            <SyncAltIcon />
+          </Badge>
+        }
       />
       <ListItemLink
         to="/tickets"
         primary={i18n.t("mainDrawer.listItems.tickets")}
         icon={<WhatsAppIcon />}
       />
+
       <ListItemLink
         to="/contacts"
         primary={i18n.t("mainDrawer.listItems.contacts")}
@@ -100,6 +109,16 @@ const MainListItems = (props) => {
         primary={i18n.t("mainDrawer.listItems.quickAnswers")}
         icon={<QuestionAnswerOutlinedIcon />}
       />
+      <ListItemLink
+        to="/schedules"
+        primary={i18n.t("mainDrawer.listItems.schedules")}
+        icon={<EventIcon />}
+      />
+      <ListItemLink
+        to="/tags"
+        primary={i18n.t("mainDrawer.listItems.tags")}
+        icon={<LocalOfferIcon />}
+      />
       <Can
         role={user.profile}
         perform="drawer-admin-items:view"
@@ -107,17 +126,28 @@ const MainListItems = (props) => {
           <>
             <Divider />
             <ListSubheader inset>
+              {i18n.t("mainDrawer.listItems.gerenciarcampanha")}
+            </ListSubheader>
+
+            <ListItemLink
+              to="/BulkMessage"
+              primary="Campanhas"
+              icon={<ChatBubbleOutlineOutlined />}
+            />
+            <ListItemLink
+              to="/ShippingReport"
+              primary="Relatório Envios"
+              icon={<LibraryBooks />}
+            />
+            <ListItemLink
+              to="/SettingsMessage"
+              primary="Config. Envios"
+              icon={<AddCircleOutline />}
+            />
+            <Divider />
+            <ListSubheader inset>
               {i18n.t("mainDrawer.listItems.administration")}
             </ListSubheader>
-            <ListItemLink
-              to="/connections"
-              primary={i18n.t("mainDrawer.listItems.connections")}
-              icon={
-                <Badge badgeContent={connectionWarning ? "!" : 0} color="error">
-                  <SyncAltIcon />
-                </Badge>
-              }
-            />
             <ListItemLink
               to="/users"
               primary={i18n.t("mainDrawer.listItems.users")}
@@ -128,6 +158,7 @@ const MainListItems = (props) => {
               primary={i18n.t("mainDrawer.listItems.queues")}
               icon={<AccountTreeOutlinedIcon />}
             />
+
             <ListItemLink
               to="/settings"
               primary={i18n.t("mainDrawer.listItems.settings")}
@@ -135,29 +166,24 @@ const MainListItems = (props) => {
             />
             <Divider />
             <ListSubheader inset>
-              {i18n.t("mainDrawer.listItems.apititle")}
+              {i18n.t("mainDrawer.listItems.api")}
             </ListSubheader>
+
             <ListItemLink
-              to="/api"
-              primary={i18n.t("mainDrawer.listItems.api")}
-              icon={
-                <CodeIcon />
-              }
+              to="/tokens"
+              primary={i18n.t("mainDrawer.listItems.tokens")}
+              icon={<VpnKeyIcon />}
             />
+
             <ListItemLink
-              to="/apidocs"
-              primary={i18n.t("mainDrawer.listItems.apidocs")}
-              icon={
-                <MenuBookIcon />
-              }
+              to="/docs"
+              primary={i18n.t("mainDrawer.listItems.docs")}
+              icon={<MenuBookIcon />}
             />
-            <ListItemLink
-              to="/apikey"
-              primary={i18n.t("mainDrawer.listItems.apikey")}
-              icon={
-                <VpnKeyRoundedIcon />
-              }
-            />
+
+
+
+
           </>
         )}
       />

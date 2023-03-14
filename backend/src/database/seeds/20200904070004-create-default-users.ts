@@ -6,8 +6,8 @@ module.exports = {
       "Users",
       [
         {
-          name: "Admin",
-          email: "admin@kbosolucoes.online",
+          name: "Administrador",
+          email: "admin@admin.com.br",
           passwordHash: "$2a$08$WaEmpmFDD/XkDqorkpQ42eUZozOqRCPkPcTkmHHMyuTGUOkI8dHsq",
           profile: "admin",
           tokenVersion: 0,

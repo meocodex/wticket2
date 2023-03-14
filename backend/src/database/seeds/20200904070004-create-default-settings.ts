@@ -12,29 +12,41 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          key: "CheckMsgIsGroup",
-          value: "enabled",
+          key: "ipixc",
+          value: "",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "call",
-          value: "disabled",
+          key: "tokenixc",
+          value: "",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "sideMenu",
-          value: "disabled",
+          key: "tokenasaas",
+          value: "",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "timeCreateNewTicket",
-          value: "10",
+          key: "ipmkauth",
+          value: "",
           createdAt: new Date(),
           updatedAt: new Date()
-        }
+        },
+        {
+          key: "clientidmkauth",
+          value: "",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          key: "clientesecretmkauth",
+          value: "",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }          
       ],
       {}
     );

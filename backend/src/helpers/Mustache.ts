@@ -1,6 +1,7 @@
 import Mustache from "mustache";
 import Contact from "../models/Contact";
 
+
 export const greeting = (): string => {
   const greetings = ["Boa madrugada", "Bom dia", "Boa tarde", "Boa noite"];
   const h = new Date().getHours();

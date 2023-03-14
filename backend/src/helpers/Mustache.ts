@@ -1,6 +1,9 @@
 import Mustache from "mustache";
 import Contact from "../models/Contact";
 import User from "../models/User";
+import Message from "../models/Message";
+import Queue from "../models/Queue";
+import Whatsapp from "../models/Whatsapp";
 import Ticket from "../models/Ticket";
 
 export const greeting = (): string => {

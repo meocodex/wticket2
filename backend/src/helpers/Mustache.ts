@@ -1,6 +1,5 @@
 import Mustache from "mustache";
 import Contact from "../models/Contact";
-import UserQueue from "../models/UserQueue";
 
 export const greeting = (): string => {
   const greetings = ["Boa madrugada", "Bom dia", "Boa tarde", "Boa noite"];
@@ -9,7 +8,7 @@ export const greeting = (): string => {
   return greetings[(h / 6) >> 0];
 };
 
-export default (body: string, contact: Contact, userqueue: UserQueue): string => {
+export default (body: string, contact: Contact): string => {
   let ms = "";
 
   const Hr = new Date();
@@ -40,7 +39,6 @@ export default (body: string, contact: Contact, userqueue: UserQueue): string =>
 
   const view = {
     name: contact ? contact.name : "",
-	nameuser: userqueue ? userqueue.userId : "",
     gretting: greeting(),
     ms,
     protocol,

@@ -1,6 +1,6 @@
 import Mustache from "mustache";
 import Contact from "../models/Contact";
-import User from "./User";
+import User from "../models/User";
 import Ticket from "../models/Ticket";
 
 export const greeting = (): string => {
@@ -41,7 +41,7 @@ export default (body: string, contact: Contact, ticket: Ticket): string => {
 
   const view = {
     name: contact ? contact.name : "",
-	user: ticket ? ticket.user : "",
+	nameuser: ticket ? ticket.user : "",
     gretting: greeting(),
     ms,
     protocol,

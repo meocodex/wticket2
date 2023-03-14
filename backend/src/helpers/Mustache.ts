@@ -10,7 +10,9 @@ export const greeting = (): string => {
 };
 
 export default (body: string, user: User): string => {
- const nameuser:  user ? user.name : "", 
+ const username = { 
+  nameuser:  user ? user.name : "", 
+  }
 }
 
 export default (body: string, contact: Contact): string => {
@@ -44,7 +46,6 @@ export default (body: string, contact: Contact): string => {
 
   const view = {
     name: contact ? contact.name : "",
-	nameuser:  user ? user.name : "", 
     gretting: greeting(),
     ms,
     protocol,

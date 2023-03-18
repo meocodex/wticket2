@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Formik, Form, Field } from "formik";
+
 import {
 	Button,
 	CssBaseline,
@@ -16,21 +18,26 @@ import {
 	IconButton,
 	Link
 } from '@material-ui/core';
-import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
+
+import { Visibility, VisibilityOff } from '@material-ui/icons';
+
 import { makeStyles } from "@material-ui/core/styles";
+
 import { i18n } from "../../translate/i18n";
+
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
-import logo from '../../assets/logo.png';
+
 import { system } from "../../../package.json";
+import logo from '../../assets/logo.png';
 
 const Copyright = () => {
 	return (
 		<Typography variant="body2" color="textSecondary" align="center">
 			© {new Date().getFullYear()}
 			{" - "}
-			<Link color="inherit" href="https://google.com.br">
-				Whatsapp - v{system.version}
+			<Link color="inherit" href="https://github.com/rtenorioh/Press-Ticket">
+			Press Ticket - v{system.version}
 			</Link>
 			{"."}
 		</Typography>
@@ -85,6 +92,9 @@ const SignUp = () => {
 			<CssBaseline />
 			<div className={classes.paper}>
 				<img alt="logo" src={logo}></img>
+				<Typography component="h1" variant="h5">
+					{i18n.t("signup.title")}
+				</Typography>
 				{/* <form className={classes.form} noValidate onSubmit={handleSignUp}> */}
 				<Formik
 					initialValues={user}
@@ -147,7 +157,7 @@ const SignUp = () => {
 														aria-label="toggle password visibility"
 														onClick={() => setShowPassword((e) => !e)}
 													>
-														{showPassword ? <VisibilityOff /> : <Visibility />}
+														{showPassword ? <VisibilityOff color="secondary" /> : <Visibility color="secondary" />}
 													</IconButton>
 												</InputAdornment>
 											)
@@ -164,7 +174,18 @@ const SignUp = () => {
 							>
 								{i18n.t("signup.buttons.submit")}
 							</Button>
-							
+							<Grid container justify="flex-end">
+								<Grid item>
+									<Link
+										href="#"
+										variant="body2"
+										component={RouterLink}
+										to="/login"
+									>
+										{i18n.t("signup.buttons.login")}
+									</Link>
+								</Grid>
+							</Grid>
 						</Form>
 					)}
 				</Formik>

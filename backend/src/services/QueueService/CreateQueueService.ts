@@ -1,13 +1,14 @@
 import * as Yup from "yup";
 import AppError from "../../errors/AppError";
 import Queue from "../../models/Queue";
-import Chatbot from "../../models/Chatbot";
 
 interface QueueData {
   name: string;
   color: string;
   greetingMessage?: string;
-  chatbots?: Chatbot[];
+  startWork?: string;
+  endWork?: string;
+  absenceMessage?: string;
 }
 
 const CreateQueueService = async (queueData: QueueData): Promise<Queue> => {
@@ -61,21 +62,9 @@ const CreateQueueService = async (queueData: QueueData): Promise<Queue> => {
     throw new AppError(err.message);
   }
 
-  try {
-    const queue = await Queue.create(queueData, {
-      include: [
-        {
-          model: Chatbot,
-          as: "chatbots",
-          attributes: ["id", "name", "greetingMessage", "isAgent"],
-          order: [[{ model: Chatbot, as: "chatbots" }, "id", "asc"]]
-        }
-      ]
-    });
-    return queue;
-  } catch (err) {
-    throw new AppError("ERR_QUEUE_CREATE_FAILED");
-  }
+  const queue = await Queue.create(queueData);
+
+  return queue;
 };
 
 export default CreateQueueService;

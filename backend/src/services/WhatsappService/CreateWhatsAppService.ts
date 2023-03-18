@@ -11,22 +11,6 @@ interface Request {
   farewellMessage?: string;
   status?: string;
   isDefault?: boolean;
-  isMultidevice?: boolean;
-  startWorkHour?: string;
-  endWorkHour?: string;
-  daysOfWeek?: string;
-  startWorkHourWeekend?: string;
-  endWorkHourWeekend?: string;
-  outOfWorkMessage?: string;
-  monday?: string;
-  tuesday?: string;
-  wednesday?: string;
-  thursday?: string;
-  friday?: string;
-  saturday?: string;
-  sunday?: string;
-  defineWorkHours?: string;
-  transferTicketMessage?: string;
 }
 
 interface Response {
@@ -40,23 +24,7 @@ const CreateWhatsAppService = async ({
   queueIds = [],
   greetingMessage,
   farewellMessage,
-  isDefault = false,
-  isMultidevice,
-  transferTicketMessage,
-  startWorkHour,
-  endWorkHour,
-  daysOfWeek,
-  startWorkHourWeekend,
-  endWorkHourWeekend,
-  outOfWorkMessage,
-  monday,
-  tuesday,
-  wednesday,
-  thursday,
-  friday,
-  saturday,
-  sunday,
-  defineWorkHours
+  isDefault = false
 }: Request): Promise<Response> => {
   const schema = Yup.object().shape({
     name: Yup.string()
@@ -73,12 +41,11 @@ const CreateWhatsAppService = async ({
           return !nameExists;
         }
       ),
-    isDefault: Yup.boolean().required(),
-    isMultidevice: Yup.boolean().required()
+    isDefault: Yup.boolean().required()
   });
 
   try {
-    await schema.validate({ name, status, isDefault, isMultidevice });
+    await schema.validate({ name, status, isDefault });
   } catch (err) {
     throw new AppError(err.message);
   }
@@ -108,23 +75,7 @@ const CreateWhatsAppService = async ({
       status,
       greetingMessage,
       farewellMessage,
-      isDefault,
-      isMultidevice,
-      transferTicketMessage,
-      startWorkHour,
-      endWorkHour,
-      daysOfWeek,
-      startWorkHourWeekend,
-      endWorkHourWeekend,
-      outOfWorkMessage,
-      monday,
-      tuesday,
-      wednesday,
-      thursday,
-      friday,
-      saturday,
-      sunday,
-      defineWorkHours
+      isDefault
     },
     { include: ["queues"] }
   );

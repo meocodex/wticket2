@@ -14,8 +14,6 @@ contactRoutes.post(
 
 contactRoutes.get("/contacts", isAuth, ContactController.index);
 
-contactRoutes.get("/contacts/list", isAuth, ContactController.list);
-
 contactRoutes.get("/contacts/:contactId", isAuth, ContactController.show);
 
 contactRoutes.post("/contacts", isAuth, ContactController.store);
@@ -25,6 +23,5 @@ contactRoutes.post("/contact", isAuth, ContactController.getContact);
 contactRoutes.put("/contacts/:contactId", isAuth, ContactController.update);
 
 contactRoutes.delete("/contacts/:contactId", isAuth, ContactController.remove);
-
 
 export default contactRoutes;

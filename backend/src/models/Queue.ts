@@ -8,10 +8,8 @@ import {
   AutoIncrement,
   AllowNull,
   Unique,
-  BelongsToMany,
-  HasMany
+  BelongsToMany
 } from "sequelize-typescript";
-import Chatbot from "./Chatbot";
 import User from "./User";
 import UserQueue from "./UserQueue";
 
@@ -38,6 +36,15 @@ class Queue extends Model<Queue> {
   @Column
   greetingMessage: string;
 
+  @Column
+  startWork: string;
+
+  @Column
+  endWork: string;
+
+  @Column
+  absenceMessage: string;
+
   @CreatedAt
   createdAt: Date;
 
@@ -49,9 +56,6 @@ class Queue extends Model<Queue> {
 
   @BelongsToMany(() => User, () => UserQueue)
   users: Array<User & { UserQueue: UserQueue }>;
-
-  @HasMany(() => Chatbot)
-  chatbots: Chatbot[];
 }
 
 export default Queue;

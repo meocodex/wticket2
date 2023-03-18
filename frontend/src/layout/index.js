@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import clsx from "clsx";
+
 import {
   makeStyles,
   Drawer,
@@ -12,16 +13,22 @@ import {
   IconButton,
   Menu,
 } from "@material-ui/core";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+
 import MainListItems from "./MainListItems";
 import NotificationsPopOver from "../components/NotificationsPopOver";
 import UserModal from "../components/UserModal";
 import { AuthContext } from "../context/Auth/AuthContext";
 import BackdropLoading from "../components/BackdropLoading";
 import { i18n } from "../translate/i18n";
-import logo from "../assets/logo.png";
+
+import api from "../services/api";
+import toastError from "../errors/toastError";
+
+import logodash from "../assets/logo-dash.png";
 import { system } from "../../package.json";
 
 const drawerWidth = 240;
@@ -34,18 +41,7 @@ const useStyles = makeStyles((theme) => ({
       height: "calc(100vh - 56px)",
     },
   },
-  avatar: {
-    width: "100%",
-  },
-  logo: {
-    width: "80%",
-    height: "auto",
-    [theme.breakpoints.down("sm")]: {
-      width: "auto",
-      height: "100%"
-    },
-    logo: theme.logo
-  },
+
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },
@@ -108,11 +104,11 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
   },
   container: {
-    // paddingTop: theme.spacing(4),
-    // paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
   paper: {
-    // padding: theme.spacing(2),
+    padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
@@ -121,14 +117,6 @@ const useStyles = makeStyles((theme) => ({
     opacity: "0.5",
     fontSize: "12px",
     marginLeft: "8px",
-  },
-  mainListItemsContainer: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none"
-    }
-  },
-  mainListItemsContainerClose: {
-
   }
 }));
 
@@ -143,8 +131,22 @@ const LoggedInLayout = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+
     if (document.body.offsetWidth > 600) {
-      setDrawerOpen(true);
+      const fetchDrawerState = async () => {
+        try {
+          const { data } = await api.get("/settings");
+
+          const settingIndex = data.filter(s => s.key === 'sideMenu');
+
+          setDrawerOpen(settingIndex[0].value === "disabled" ? false : true);
+
+        } catch (err) {
+          setDrawerOpen(true);
+          toastError(err);
+        }
+      };
+      fetchDrawerState();
     }
   }, []);
 
@@ -200,8 +202,8 @@ const LoggedInLayout = ({ children }) => {
         open={drawerOpen}
       >
         <div className={classes.toolbarIcon}>
-          <img src={logo} width={"80%"} style={{ marginLeft: 'auto', marginRight: 'auto', display: 'flex' }} />
-          <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+          <img src={logodash} alt="logo" />
+          <IconButton color="secondary" onClick={() => setDrawerOpen(!drawerOpen)}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
@@ -246,7 +248,6 @@ const LoggedInLayout = ({ children }) => {
               {"(v"}{system.version}{")"}
             </span>
           </Typography>
-
           {user.id && <NotificationsPopOver />}
 
           <div>

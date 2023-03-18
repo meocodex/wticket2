@@ -1,49 +1,31 @@
-import { proto, WALegacySocket } from "@adiwajshing/baileys";
+import { Message as WbotMessage } from "whatsapp-web.js";
 import Ticket from "../models/Ticket";
 import GetTicketWbot from "./GetTicketWbot";
 import AppError from "../errors/AppError";
-import GetMessageService from "../services/MessageServices/GetMessagesService";
-import Message from "../models/Message";
 
 export const GetWbotMessage = async (
   ticket: Ticket,
   messageId: string
-): Promise<proto.WebMessageInfo | Message> => {
-  const getSock = await GetTicketWbot(ticket);
+): Promise<WbotMessage> => {
+  const wbot = await GetTicketWbot(ticket);
+
+  const wbotChat = await wbot.getChatById(
+    `${ticket.contact.number}@${ticket.isGroup ? "g" : "c"}.us`
+  );
 
   let limit = 20;
 
-  const fetchWbotMessagesGradually = async (): Promise<
-    proto.WebMessageInfo | Message
-  > => {
-    if (getSock.type === "legacy") {
-      const wbot: WALegacySocket = getSock;
-      const chatMessages = await wbot.fetchMessagesFromWA(
-        `${ticket.contact.number}@${
-          ticket.isGroup ? "g.us" : "s.whatsapp.net"
-        }`,
-        limit
-      );
+  const fetchWbotMessagesGradually = async (): Promise<void | WbotMessage> => {
+    const chatMessages = await wbotChat.fetchMessages({ limit });
 
-      const msgFound = chatMessages.find(msg => msg.key.id === messageId);
+    const msgFound = chatMessages.find(msg => msg.id.id === messageId);
 
-      if (!msgFound && limit < 100) {
-        limit += 20;
-        return fetchWbotMessagesGradually();
-      }
-
-      return msgFound;
+    if (!msgFound && limit < 100) {
+      limit += 20;
+      return fetchWbotMessagesGradually();
     }
 
-    if (getSock.type === "md") {
-      const msgFound = await GetMessageService({
-        id: messageId
-      });
-
-      return msgFound;
-    }
-
-    return null;
+    return msgFound;
   };
 
   try {
@@ -55,7 +37,6 @@ export const GetWbotMessage = async (
 
     return msgFound;
   } catch (err) {
-    console.log(err);
     throw new AppError("ERR_FETCH_WAPP_MSG");
   }
 };

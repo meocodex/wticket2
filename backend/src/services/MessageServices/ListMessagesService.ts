@@ -2,7 +2,6 @@ import AppError from "../../errors/AppError";
 import Message from "../../models/Message";
 import Ticket from "../../models/Ticket";
 import ShowTicketService from "../TicketServices/ShowTicketService";
-import { SendAckBYticketId } from "../WbotServices/SendAck"
 
 interface Request {
   ticketId: string;
@@ -31,7 +30,8 @@ const ListMessagesService = async ({
   const offset = limit * (+pageNumber - 1);
 
   const { count, rows: messages } = await Message.findAndCountAll({
-
+    //where: { ticketId },
+    //where: {contactid : ticket.contactId},
     limit,
     include: [
       "contact",
@@ -42,15 +42,13 @@ const ListMessagesService = async ({
       },
       {
         model: Ticket,
-        where: { contactId: ticket.contactId },
+        where: {contactId: ticket.contactId  },
         required: true
       }
     ],
     offset,
     order: [["createdAt", "DESC"]]
   });
-
-  await SendAckBYticketId({ ticketId })
 
   const hasMore = count > offset + messages.length;
 

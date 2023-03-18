@@ -12,41 +12,41 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          key: "ipixc",
-          value: "",
+          key: "CheckMsgIsGroup",
+          value: "enabled",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "tokenixc",
-          value: "",
+          key: "call",
+          value: "disabled",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "tokenasaas",
-          value: "",
+          key: "sideMenu",
+          value: "disabled",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "ipmkauth",
-          value: "",
+          key: "timeCreateNewTicket",
+          value: "10",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "clientidmkauth",
-          value: "",
+          key: "closeTicketApi",
+          value: "disabled",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "clientesecretmkauth",
-          value: "",
+          key: "darkMode",
+          value: "disabled",
           createdAt: new Date(),
           updatedAt: new Date()
-        }          
+        }
       ],
       {}
     );

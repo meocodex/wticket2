@@ -12,7 +12,6 @@ interface MessageData {
   read?: boolean;
   mediaType?: string;
   mediaUrl?: string;
-  textMassMessage?: string
 }
 interface Request {
   messageData: MessageData;

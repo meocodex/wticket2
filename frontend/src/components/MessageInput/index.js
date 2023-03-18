@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   newMessageBox: {
-    background: "#eee",
+    background: theme.palette.background.default,
     width: "100%",
     display: "flex",
     padding: "7px",
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   messageInputWrapper: {
     padding: 6,
     marginRight: 7,
-    background: "#fff",
+    background: theme.palette.background.paper,
     display: "flex",
     borderRadius: 20,
     flex: 1,
@@ -354,7 +354,7 @@ const MessageInput = ({ ticketStatus }) => {
       }
 
       const formData = new FormData();
-      const filename = `audio-record-site-${new Date().getTime()}.mp3`;
+      const filename = `${new Date().getTime()}.mp3`;
       formData.append("medias", blob, filename);
       formData.append("body", filename);
       formData.append("fromMe", true);

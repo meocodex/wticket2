@@ -6,8 +6,10 @@ import Container from "@material-ui/core/Container";
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     flex: 1,
-    padding: 16,
-    height: `calc(100% - 48px)`
+    // padding: theme.spacing(2),
+    // height: `calc(100% - 48px)`,
+    padding: 0,
+    height: "100%",
   },
 
   contentWrapper: {

@@ -6,7 +6,6 @@ import openSocket from "../../services/socket-io";
 import clsx from "clsx";
 
 import { Paper, makeStyles } from "@material-ui/core";
-import { TagsContainer } from "../TagsContainer";
 
 import ContactDrawer from "../ContactDrawer";
 import MessageInput from "../MessageInput/";
@@ -22,6 +21,7 @@ const drawerWidth = 320;
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    backgroundColor: theme.palette.background.default,
     display: "flex",
     height: "100%",
     position: "relative",
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   ticketInfo: {
+    backgroundColor: theme.palette.background.default,
     maxWidth: "50%",
     flexBasis: "50%",
     [theme.breakpoints.down("sm")]: {
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   ticketActionButtons: {
+    backgroundColor: theme.palette.background.default,
     maxWidth: "50%",
     flexBasis: "50%",
     display: "flex",
@@ -165,9 +167,6 @@ const Ticket = () => {
             <TicketActionButtons ticket={ticket} />
           </div>
         </TicketHeader>
-        <Paper>
-          <TagsContainer ticket={ticket} />
-        </Paper>
         <ReplyMessageProvider>
           <MessagesList
             ticketId={ticketId}

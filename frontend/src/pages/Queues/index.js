@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 
-import openSocket from "socket.io-client";
+import openSocket from "../../services/socket-io";
 
 import {
   Button,
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     padding: theme.spacing(1),
     overflowY: "scroll",
+    ...theme.scrollbarStyles,
   },
   customTableCell: {
     display: "flex",
@@ -110,12 +111,7 @@ const Queues = () => {
   }, []);
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("token"));
-
-    const socket = openSocket(process.env.REACT_APP_BACKEND_URL, {query: {token}});
-    socket.on("connect", () => {
-      socket.emit("joinCompany")
-    });
+    const socket = openSocket();
 
     socket.on("queue", (data) => {
       if (data.action === "update" || data.action === "create") {
@@ -137,9 +133,7 @@ const Queues = () => {
     setSelectedQueue(null);
   };
 
-
   const handleCloseQueueModal = () => {
-    console.log('fechou modal')
     setQueueModalOpen(false);
     setSelectedQueue(null);
   };
@@ -157,7 +151,7 @@ const Queues = () => {
   const handleDeleteQueue = async (queueId) => {
     try {
       await api.delete(`/queue/${queueId}`);
-      toast.success(i18n.t("Queue deleted successfully!"));
+      toast.success(i18n.t("queues.notifications.queueDeleted"));
     } catch (err) {
       toastError(err);
     }
@@ -183,16 +177,6 @@ const Queues = () => {
         open={queueModalOpen}
         onClose={handleCloseQueueModal}
         queueId={selectedQueue?.id}
-        onEdit={(res) => {
-          if(res) {
-              setTimeout(() => {
-                // setQueueModalOpen(true)
-                // setSelectedQueue(res.id)
-                handleEditQueue(res)
-                // handleOpenQueueModalChatbot(res.id)
-              }, 200)
-          }
-        }}
       />
       <MainHeader>
         <Title>{i18n.t("queues.title")}</Title>
@@ -218,6 +202,12 @@ const Queues = () => {
               </TableCell>
               <TableCell align="center">
                 {i18n.t("queues.table.greeting")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("queues.table.startWork")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("queues.table.endWork")}
               </TableCell>
               <TableCell align="center">
                 {i18n.t("queues.table.actions")}
@@ -252,12 +242,14 @@ const Queues = () => {
                       </Typography>
                     </div>
                   </TableCell>
+                  <TableCell align="center">{queue.startWork}</TableCell>
+                  <TableCell align="center">{queue.endWork}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
                       onClick={() => handleEditQueue(queue)}
                     >
-                      <Edit />
+                      <Edit color="secondary" />
                     </IconButton>
 
                     <IconButton
@@ -267,7 +259,7 @@ const Queues = () => {
                         setConfirmModalOpen(true);
                       }}
                     >
-                      <DeleteOutline />
+                      <DeleteOutline color="secondary" />
                     </IconButton>
                   </TableCell>
                 </TableRow>

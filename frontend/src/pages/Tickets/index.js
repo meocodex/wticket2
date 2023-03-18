@@ -10,13 +10,16 @@ import Ticket from "../../components/Ticket/";
 import { i18n } from "../../translate/i18n";
 import Hidden from "@material-ui/core/Hidden";
 
+import logo from "../../assets/Logo_circle.png";
+
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
     flex: 1,
-    // // backgroundColor: "#eee",
+    // backgroundColor: "#eee",
     // padding: theme.spacing(4),
-    height: `calc(100% - 48px)`,
+    height: `calc(97% - 48px)`,
     overflowY: "hidden",
+    margin: theme.spacing(1),
   },
 
   chatPapper: {
@@ -46,13 +49,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   welcomeMsg: {
-    backgroundColor: "#eee",
+    backgroundColor: theme.palette.background.paper,
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",
     height: "100%",
     textAlign: "center",
-    borderRadius: 0,
   },
   ticketsManager: {},
   ticketsManagerClosed: {
@@ -91,7 +93,12 @@ const Chat = () => {
               <Hidden only={["sm", "xs"]}>
                 <Paper className={classes.welcomeMsg}>
                   {/* <Paper square variant="outlined" className={classes.welcomeMsg}> */}
-                  <span>{i18n.t("chat.noTicketMessage")}</span>
+                  <span>
+                    <center>
+                      <img src={logo} width="50%" alt=""/>
+                    </center>
+                    {i18n.t("chat.noTicketMessage")}
+                    </span>
                 </Paper>
               </Hidden>
             )}

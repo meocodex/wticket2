@@ -31,7 +31,8 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
     flex: 1,
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
+    margin: theme.spacing(1),
     overflowY: "scroll",
     ...theme.scrollbarStyles,
   },
@@ -151,7 +152,7 @@ const Queues = () => {
   const handleDeleteQueue = async (queueId) => {
     try {
       await api.delete(`/queue/${queueId}`);
-      toast.success(i18n.t("Queue deleted successfully!"));
+      toast.success(i18n.t("queues.notifications.queueDeleted"));
     } catch (err) {
       toastError(err);
     }
@@ -204,6 +205,12 @@ const Queues = () => {
                 {i18n.t("queues.table.greeting")}
               </TableCell>
               <TableCell align="center">
+                {i18n.t("queues.table.startWork")}
+              </TableCell>
+              <TableCell align="center">
+                {i18n.t("queues.table.endWork")}
+              </TableCell>
+              <TableCell align="center">
                 {i18n.t("queues.table.actions")}
               </TableCell>
             </TableRow>
@@ -218,9 +225,10 @@ const Queues = () => {
                       <span
                         style={{
                           backgroundColor: queue.color,
-                          width: 60,
+                          width: 20,
                           height: 20,
                           alignSelf: "center",
+                          borderRadius: 10
                         }}
                       />
                     </div>
@@ -236,12 +244,14 @@ const Queues = () => {
                       </Typography>
                     </div>
                   </TableCell>
+                  <TableCell align="center">{queue.startWork}</TableCell>
+                  <TableCell align="center">{queue.endWork}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
                       onClick={() => handleEditQueue(queue)}
                     >
-                      <Edit />
+                      <Edit color="secondary" />
                     </IconButton>
 
                     <IconButton
@@ -251,7 +261,7 @@ const Queues = () => {
                         setConfirmModalOpen(true);
                       }}
                     >
-                      <DeleteOutline />
+                      <DeleteOutline color="secondary" />
                     </IconButton>
                   </TableCell>
                 </TableRow>

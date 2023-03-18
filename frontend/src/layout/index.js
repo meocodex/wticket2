@@ -2,16 +2,17 @@ import React, { useState, useContext, useEffect } from "react";
 import clsx from "clsx";
 
 import {
-  makeStyles,
-  Drawer,
   AppBar,
-  Toolbar,
-  List,
-  Typography,
   Divider,
-  MenuItem,
+  Drawer,
   IconButton,
+  Link,
+  List,
+  makeStyles,
   Menu,
+  MenuItem,
+  Toolbar,
+  Typography
 } from "@material-ui/core";
 
 import MenuIcon from "@material-ui/icons/Menu";
@@ -25,6 +26,12 @@ import { AuthContext } from "../context/Auth/AuthContext";
 import BackdropLoading from "../components/BackdropLoading";
 import { i18n } from "../translate/i18n";
 
+import api from "../services/api";
+import toastError from "../errors/toastError";
+import { system } from "../config.json";
+import { systemVersion } from "../../package.json";
+import logodash from "../assets/logo-dash.png";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -35,9 +42,10 @@ const useStyles = makeStyles((theme) => ({
       height: "calc(100vh - 56px)",
     },
   },
-
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
+    color: "#ffffff",
+    background: theme.palette.toolbar.main
   },
   toolbarIcon: {
     display: "flex",
@@ -45,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     padding: "0 8px",
     minHeight: "48px",
+    backgroundColor: theme.palette.toolbarIcon.main
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -107,6 +116,12 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
   },
+  systemCss: {
+    display: "flex",
+    justifyContent: "center",
+    opacity: 0.2,
+    fontSize: 12
+  }
 }));
 
 const LoggedInLayout = ({ children }) => {
@@ -120,8 +135,22 @@ const LoggedInLayout = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+
     if (document.body.offsetWidth > 600) {
-      setDrawerOpen(true);
+      const fetchDrawerState = async () => {
+        try {
+          const { data } = await api.get("/settings");
+
+          const settingIndex = data.filter(s => s.key === 'sideMenu');
+
+          setDrawerOpen(settingIndex[0].value === "disabled" ? false : true);
+
+        } catch (err) {
+          setDrawerOpen(true);
+          toastError(err);
+        }
+      };
+      fetchDrawerState();
     }
   }, []);
 
@@ -177,7 +206,8 @@ const LoggedInLayout = ({ children }) => {
         open={drawerOpen}
       >
         <div className={classes.toolbarIcon}>
-          <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+          <img src={logodash} alt="logo" />
+          <IconButton color="secondary" onClick={() => setDrawerOpen(!drawerOpen)}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
@@ -217,7 +247,7 @@ const LoggedInLayout = ({ children }) => {
             noWrap
             className={classes.title}
           >
-            MTech Ticket
+            {system.name || "Press Ticket"}
           </Typography>
           {user.id && <NotificationsPopOver />}
 
@@ -252,6 +282,12 @@ const LoggedInLayout = ({ children }) => {
               <MenuItem onClick={handleClickLogout}>
                 {i18n.t("mainDrawer.appBar.user.logout")}
               </MenuItem>
+              <Divider />
+              <span className={classes.systemCss}>
+                <Link color="inherit" href={system.url || "https://github.com/rtenorioh/Press-Ticket"}>
+                  v{systemVersion}
+                </Link>
+              </span>
             </Menu>
           </div>
         </Toolbar>

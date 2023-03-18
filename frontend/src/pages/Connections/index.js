@@ -44,7 +44,8 @@ import toastError from "../../errors/toastError";
 const useStyles = makeStyles(theme => ({
 	mainPaper: {
 		flex: 1,
-		padding: theme.spacing(1),
+		padding: theme.spacing(2),
+		margin: theme.spacing(1),
 		overflowY: "scroll",
 		...theme.scrollbarStyles,
 	},
@@ -230,17 +231,17 @@ const Connections = () => {
 				{(whatsApp.status === "CONNECTED" ||
 					whatsApp.status === "PAIRING" ||
 					whatsApp.status === "TIMEOUT") && (
-					<Button
-						size="small"
-						variant="outlined"
-						color="secondary"
-						onClick={() => {
-							handleOpenConfirmationModal("disconnect", whatsApp.id);
-						}}
-					>
-						{i18n.t("connections.buttons.disconnect")}
-					</Button>
-				)}
+						<Button
+							size="small"
+							variant="outlined"
+							color="secondary"
+							onClick={() => {
+								handleOpenConfirmationModal("disconnect", whatsApp.id);
+							}}
+						>
+							{i18n.t("connections.buttons.disconnect")}
+						</Button>
+					)}
 				{whatsApp.status === "OPENING" && (
 					<Button size="small" variant="outlined" disabled color="default">
 						{i18n.t("connections.buttons.connecting")}
@@ -326,10 +327,16 @@ const Connections = () => {
 					<TableHead>
 						<TableRow>
 							<TableCell align="center">
+								{i18n.t("connections.table.id")}
+							</TableCell>
+							<TableCell align="center">
 								{i18n.t("connections.table.name")}
 							</TableCell>
 							<TableCell align="center">
 								{i18n.t("connections.table.status")}
+							</TableCell>
+							<TableCell align="center">
+								{i18n.t("connections.table.number")}
 							</TableCell>
 							<TableCell align="center">
 								{i18n.t("connections.table.session")}
@@ -353,9 +360,22 @@ const Connections = () => {
 								{whatsApps?.length > 0 &&
 									whatsApps.map(whatsApp => (
 										<TableRow key={whatsApp.id}>
-											<TableCell align="center">{whatsApp.name}</TableCell>
+											<TableCell align="center">
+												{whatsApp.id}
+											</TableCell>
+											<TableCell align="center">
+												{whatsApp.name}
+											</TableCell>
 											<TableCell align="center">
 												{renderStatusToolTips(whatsApp)}
+											</TableCell>
+											<TableCell align="center">
+												{whatsApp.number ? (
+												<>
+												+{whatsApp.number}
+												</>
+												) : "-"}
+												
 											</TableCell>
 											<TableCell align="center">
 												{renderActionButtons(whatsApp)}
@@ -375,7 +395,7 @@ const Connections = () => {
 													size="small"
 													onClick={() => handleEditWhatsApp(whatsApp)}
 												>
-													<Edit />
+													<Edit color="secondary" />
 												</IconButton>
 
 												<IconButton
@@ -384,7 +404,7 @@ const Connections = () => {
 														handleOpenConfirmationModal("delete", whatsApp.id);
 													}}
 												>
-													<DeleteOutline />
+													<DeleteOutline color="secondary" />
 												</IconButton>
 											</TableCell>
 										</TableRow>

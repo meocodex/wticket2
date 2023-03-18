@@ -39,6 +39,9 @@ class Whatsapp extends Model<Whatsapp> {
   status: string;
 
   @Column
+  number: string;
+
+  @Column
   battery: string;
 
   @Column
@@ -57,6 +60,11 @@ class Whatsapp extends Model<Whatsapp> {
   @AllowNull
   @Column
   isDefault: boolean;
+
+  @Default(false)
+  @AllowNull
+  @Column
+  isDisplay: boolean;
 
   @CreatedAt
   createdAt: Date;

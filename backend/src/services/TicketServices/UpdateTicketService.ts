@@ -50,7 +50,6 @@ const UpdateTicketService = async ({
     userId
   });
 
-
   if(whatsappId) {
     await ticket.update({
       whatsappId
@@ -67,8 +66,6 @@ const UpdateTicketService = async ({
       ticketId: ticket.id
     });
   }
-
-
 
   io.to(ticket.status)
     .to("notification")

@@ -35,6 +35,7 @@ const syncUnreadMessages = async (wbot: Session) => {
 export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
   return new Promise((resolve, reject) => {
     try {
+      logger.level = "trace";
       const io = getIO();
       const sessionName = whatsapp.name;
       let sessionCfg;
@@ -43,16 +44,42 @@ export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
         sessionCfg = JSON.parse(whatsapp.session);
       }
 
-      const args:String = process.env.CHROME_ARGS || "";
-
       const wbot: Session = new Client({
         session: sessionCfg,
-        authStrategy: new LocalAuth({clientId: 'bd_'+whatsapp.id}),
+        authStrategy: new LocalAuth({ clientId: `bd_${whatsapp.id}` }),
         puppeteer: {
-          executablePath: process.env.CHROME_BIN || undefined,
-          // @ts-ignore
-          browserWSEndpoint: process.env.CHROME_WS || undefined,
-          args: args.split(' ')
+          args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--log-level=3",
+            "--no-default-browser-check",
+            "--disable-site-isolation-trials",
+            "--no-experiments",
+            "--ignore-gpu-blacklist",
+            "--ignore-certificate-errors",
+            "--ignore-certificate-errors-spki-list",
+            "--disable-gpu",
+            "--disable-extensions",
+            "--disable-default-apps",
+            "--enable-features=NetworkService",
+            "--disable-setuid-sandbox",
+            "--no-sandbox",
+            "--disable-webgl",
+            "--disable-threaded-animation",
+            "--disable-threaded-scrolling",
+            "--disable-in-process-stack-traces",
+            "--disable-histogram-customizer",
+            "--disable-gl-extensions",
+            "--disable-composited-antialiasing",
+            "--disable-canvas-aa",
+            "--disable-3d-apis",
+            "--disable-accelerated-2d-canvas",
+            "--disable-accelerated-jpeg-decoding",
+            "--disable-accelerated-mjpeg-decode",
+            "--disable-app-list-dismiss-on-blur",
+            "--disable-accelerated-video-decode"
+          ],
+          executablePath: process.env.CHROME_BIN || undefined
         }
       });
 
@@ -77,6 +104,9 @@ export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
 
       wbot.on("authenticated", async session => {
         logger.info(`Session: ${sessionName} AUTHENTICATED`);
+        //        await whatsapp.update({
+        //          session: JSON.stringify(session)
+        //        });
       });
 
       wbot.on("auth_failure", async msg => {
@@ -108,7 +138,8 @@ export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
         await whatsapp.update({
           status: "CONNECTED",
           qrcode: "",
-          retries: 0
+          retries: 0,
+          number: wbot.info.wid._serialized.split("@")[0]
         });
 
         io.emit("whatsappSession", {
@@ -127,7 +158,7 @@ export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
 
         resolve(wbot);
       });
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err);
     }
   });
@@ -149,7 +180,7 @@ export const removeWbot = (whatsappId: number): void => {
       sessions[sessionIndex].destroy();
       sessions.splice(sessionIndex, 1);
     }
-  } catch (err) {
+  } catch (err: any) {
     logger.error(err);
   }
 };

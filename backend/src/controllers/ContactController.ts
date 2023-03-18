@@ -7,6 +7,7 @@ import CreateContactService from "../services/ContactServices/CreateContactServi
 import ShowContactService from "../services/ContactServices/ShowContactService";
 import UpdateContactService from "../services/ContactServices/UpdateContactService";
 import DeleteContactService from "../services/ContactServices/DeleteContactService";
+import DeleteAllContactService from "../services/ContactServices/DeleteAllContactService";
 
 import CheckContactNumber from "../services/WbotServices/CheckNumber"
 import CheckIsValidContact from "../services/WbotServices/CheckIsValidContact";
@@ -22,6 +23,7 @@ type IndexQuery = {
 type IndexGetContactQuery = {
   name: string;
   number: string;
+  email: string;
 };
 
 interface ExtraInfo {
@@ -47,11 +49,12 @@ export const index = async (req: Request, res: Response): Promise<Response> => {
 };
 
 export const getContact = async (req: Request, res: Response): Promise<Response> => {
-  const { name, number } = req.body as IndexGetContactQuery;
+  const { name, number, email } = req.body as IndexGetContactQuery;
 
   const contact = await GetContactService({
     name,
-    number
+    number,
+    email
   });
 
   return res.status(200).json(contact);
@@ -59,7 +62,13 @@ export const getContact = async (req: Request, res: Response): Promise<Response>
 
 export const store = async (req: Request, res: Response): Promise<Response> => {
   const newContact: ContactData = req.body;
-  newContact.number = newContact.number.replace("-", "").replace(" ", "");
+  newContact.number = newContact.number.replace("-", "")
+    .replace(" ", "")
+    .replace("(", "")
+    .replace(")", "")
+    .replace("+", "")
+    .replace(".", "")
+    .replace("_", "");;
 
   const schema = Yup.object().shape({
     name: Yup.string().required(),
@@ -75,8 +84,8 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
   }
 
   await CheckIsValidContact(newContact.number);
-  const validNumber : any = await CheckContactNumber(newContact.number)
-  
+  const validNumber: any = await CheckContactNumber(newContact.number)
+
   const profilePicUrl = await GetProfilePicUrl(validNumber);
 
   let name = newContact.name
@@ -103,9 +112,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
 
 export const show = async (req: Request, res: Response): Promise<Response> => {
   const { contactId } = req.params;
-
   const contact = await ShowContactService(contactId);
-
   return res.status(200).json(contact);
 };
 
@@ -159,4 +166,15 @@ export const remove = async (
   });
 
   return res.status(200).json({ message: "Contact deleted" });
+};
+
+export const removeAll = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { contactId } = req.params;
+
+  await DeleteAllContactService();
+
+  return res.send();
 };

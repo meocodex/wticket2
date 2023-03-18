@@ -1,28 +1,54 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import Divider from "@material-ui/core/Divider";
-import { Badge } from "@material-ui/core";
-import DashboardOutlinedIcon from "@material-ui/icons/DashboardOutlined";
-import WhatsAppIcon from "@material-ui/icons/WhatsApp";
-import SyncAltIcon from "@material-ui/icons/SyncAlt";
-import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
-import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
-import ContactPhoneOutlinedIcon from "@material-ui/icons/ContactPhoneOutlined";
-import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
-import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutlined";
+import {
+  Badge,
+  Divider,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  makeStyles
+} from "@material-ui/core";
+
+import {
+  AccountTreeOutlined,
+  Code,
+  ContactPhoneOutlined,
+  DashboardOutlined,
+  LocalOffer,
+  MenuBook,
+  PeopleAltOutlined,
+  QuestionAnswerOutlined,
+  SettingsOutlined,
+  SyncAlt,
+  VpnKeyRounded,
+  WhatsApp
+} from "@material-ui/icons";
 
 import { i18n } from "../translate/i18n";
 import { WhatsAppsContext } from "../context/WhatsApp/WhatsAppsContext";
 import { AuthContext } from "../context/Auth/AuthContext";
 import { Can } from "../components/Can";
 
+const useStyles = makeStyles(theme => ({
+  icon: {
+    color: theme.palette.secondary.main
+  },
+  li: {
+    backgroundColor: theme.palette.menuItens.main
+  },
+  sub: {
+    backgroundColor: theme.palette.sub.main
+  },
+  divider: {
+    backgroundColor: theme.palette.divide.main
+  }
+}));
+
 function ListItemLink(props) {
   const { icon, primary, to, className } = props;
+  const classes = useStyles();
 
   const renderLink = React.useMemo(
     () =>
@@ -33,9 +59,9 @@ function ListItemLink(props) {
   );
 
   return (
-    <li>
+    <li className={classes.li}>
       <ListItem button component={renderLink} className={className}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+        {icon ? <ListItemIcon className={classes.icon}>{icon}</ListItemIcon> : null}
         <ListItemText primary={primary} />
       </ListItem>
     </li>
@@ -47,6 +73,7 @@ const MainListItems = (props) => {
   const { whatsApps } = useContext(WhatsAppsContext);
   const { user } = useContext(AuthContext);
   const [connectionWarning, setConnectionWarning] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -75,56 +102,85 @@ const MainListItems = (props) => {
       <ListItemLink
         to="/"
         primary="Dashboard"
-        icon={<DashboardOutlinedIcon />}
-      />
-      <ListItemLink
-        to="/connections"
-        primary={i18n.t("mainDrawer.listItems.connections")}
-        icon={
-          <Badge badgeContent={connectionWarning ? "!" : 0} color="error">
-            <SyncAltIcon />
-          </Badge>
-        }
+        icon={<DashboardOutlined />}
       />
       <ListItemLink
         to="/tickets"
         primary={i18n.t("mainDrawer.listItems.tickets")}
-        icon={<WhatsAppIcon />}
+        icon={<WhatsApp />}
       />
-
       <ListItemLink
         to="/contacts"
         primary={i18n.t("mainDrawer.listItems.contacts")}
-        icon={<ContactPhoneOutlinedIcon />}
+        icon={<ContactPhoneOutlined />}
       />
       <ListItemLink
         to="/quickAnswers"
         primary={i18n.t("mainDrawer.listItems.quickAnswers")}
-        icon={<QuestionAnswerOutlinedIcon />}
+        icon={<QuestionAnswerOutlined />}
+      />
+      <ListItemLink
+        to="/tags"
+        primary={i18n.t("mainDrawer.listItems.tags")}
+        icon={<LocalOffer />}
       />
       <Can
         role={user.profile}
         perform="drawer-admin-items:view"
         yes={() => (
           <>
-            <Divider />
-            <ListSubheader inset>
+            <Divider className={classes.divider}/>
+            <ListSubheader inset className={classes.sub}>
               {i18n.t("mainDrawer.listItems.administration")}
             </ListSubheader>
             <ListItemLink
+              to="/connections"
+              primary={i18n.t("mainDrawer.listItems.connections")}
+              icon={
+                <Badge badgeContent={connectionWarning ? "!" : 0} color="error">
+                  <SyncAlt />
+                </Badge>
+              }
+            />
+            <ListItemLink
               to="/users"
               primary={i18n.t("mainDrawer.listItems.users")}
-              icon={<PeopleAltOutlinedIcon />}
+              icon={<PeopleAltOutlined />}
             />
             <ListItemLink
               to="/queues"
               primary={i18n.t("mainDrawer.listItems.queues")}
-              icon={<AccountTreeOutlinedIcon />}
+              icon={<AccountTreeOutlined />}
             />
             <ListItemLink
               to="/settings"
               primary={i18n.t("mainDrawer.listItems.settings")}
-              icon={<SettingsOutlinedIcon />}
+              icon={<SettingsOutlined />}
+            />
+            <Divider className={classes.divider} />
+            <ListSubheader inset className={classes.sub}>
+              {i18n.t("mainDrawer.listItems.apititle")}
+            </ListSubheader>
+            <ListItemLink
+              to="/api"
+              primary={i18n.t("mainDrawer.listItems.api")}
+              icon={
+                <Code />
+              }
+            />
+            <ListItemLink
+              to="/apidocs"
+              primary={i18n.t("mainDrawer.listItems.apidocs")}
+              icon={
+                <MenuBook />
+              }
+            />
+            <ListItemLink
+              to="/apikey"
+              primary={i18n.t("mainDrawer.listItems.apikey")}
+              icon={
+                <VpnKeyRounded />
+              }
             />
           </>
         )}

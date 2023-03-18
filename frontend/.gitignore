@@ -11,6 +11,8 @@
 
 # production
 /build
+/dist
+/src/config.json
 
 # misc
 .DS_Store
@@ -25,4 +27,4 @@ yarn-debug.log*
 yarn-error.log*
 package-lock.json
 yarn.lock
-
+build

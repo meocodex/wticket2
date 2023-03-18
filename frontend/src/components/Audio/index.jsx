@@ -1,7 +1,5 @@
 import { Button } from "@material-ui/core";
-import React, { useRef } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const LS_NAME = 'audioMessageRate';
 
@@ -14,7 +12,6 @@ export default function({url}) {
         audioRef.current.playbackRate = audioRate;
         localStorage.setItem(LS_NAME, audioRate);
     }, [audioRate]);
-
     useEffect(() => {
         audioRef.current.onplaying = () => {
             setShowButtonRate(true);
@@ -47,7 +44,7 @@ export default function({url}) {
                 newRate = 1;
                 break;
         }
-        
+
         setAudioRate(newRate);
     };
 

@@ -247,7 +247,7 @@ const LoggedInLayout = ({ children }) => {
             noWrap
             className={classes.title}
           >
-            {system.name || "Press Ticket"}
+            {system.name || "MTech Ticket"}
           </Typography>
           {user.id && <NotificationsPopOver />}
 

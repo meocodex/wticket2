@@ -25,7 +25,7 @@ export const control = (): string => {
   const mm: string = ("0" + (Hr.getMonth() + 1)).slice(-2);
   const yy: string = Hr.getFullYear().toString();
 
-  const ctrl = yy + mm + dd + "/";
+  const ctrl = yy;
   return ctrl;
 };
 
